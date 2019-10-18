@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Burger from "../../components/Burger/Burger";
+import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Auxillary from "../../hoc/Auxillary";
 
 class BurgerBuilder extends Component {
@@ -16,7 +17,7 @@ class BurgerBuilder extends Component {
     return (
       <Auxillary>
         <Burger ingredients={ingredients}/>
-        <div>Build Controls</div>
+        <BuildControls />
       </Auxillary>
     );
   }

@@ -10,7 +10,6 @@ const Burger = props => {
       ))
     )
     .reduce((prev, curr) => prev.concat(curr), []);
-  console.log(transformedIngredients);
   return (
     <div className={classes.Burger}>
       <BurgerIngredients type="bread-top" />
