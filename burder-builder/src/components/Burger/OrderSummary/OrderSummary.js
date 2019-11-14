@@ -2,7 +2,7 @@ import React from "react";
 import Auxillary from "../../../hoc/Auxillary";
 const OrderSummary = props => {
   const ingredientSummary = Object.keys(props.ingredients).map(igKey => (
-    <li>
+    <li key={igKey}>
       <span
         style={{
           textTransform: "capitalize"
@@ -18,6 +18,7 @@ const OrderSummary = props => {
       <h3>Your Order</h3>
       <p>A delicious burger with the following ingredients</p>
       <ul>{ingredientSummary}</ul>
+      <p>Continue to checkout</p>
     </Auxillary>
   );
 };
