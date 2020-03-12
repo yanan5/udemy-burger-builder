@@ -12,7 +12,7 @@ class NewPost extends Component {
 
   addPostHandler = () => {
     axios
-      .post("https://jsonplaceholder.typicode.com/posts", this.state)
+      .post("/posts", this.state)
       .then(res => console.log(res))
       
       .catch(err =>
