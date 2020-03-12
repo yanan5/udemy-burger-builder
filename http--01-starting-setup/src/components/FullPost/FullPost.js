@@ -5,7 +5,8 @@ import "./FullPost.css";
 
 class FullPost extends Component {
   state = {
-    selectedPost: null
+    selectedPost: null,
+    deleteErr: null
   };
   componentDidUpdate(prevProps, prevState) {
     if (this.props.id !== -1 && this.props.id !== prevProps.id) {
@@ -15,17 +16,35 @@ class FullPost extends Component {
           this.setState({
             selectedPost: res.data
           })
+        )
+        .catch(err =>
+          this.setState({ deleteErr: err }, () => {
+            setTimeout(() => this.setState({ deleteErr: null }), 3000)
+          })
         );
     }
   }
   deletePostHandler = () => {
-      axios.delete(`https://jsonplaceholder.typicode.com/posts/${this.props.id}`)
-      .then(res => console.log('deleted', res))
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/posts/${this.props.id}`)
+      .then(res => console.log("deleted", res))
+      .catch(err =>
+        this.setState({ deleteErr: err }, () => {
+          setTimeout(() => this.setState({ deleteErr: null }), 3000)
+        })
+      );
   };
   render() {
+    const { selectedPost, deleteErr } = this.state;
     let post = <p style={{ textAlign: "center" }}>Please select a Post!</p>;
-    const { selectedPost } = this.state;
-    if (this.props.id !== -1 && selectedPost) {
+    if (deleteErr !== null) {
+      post = (
+        <p style={{ textAlign: "center", color: "red" }}>
+          Error Deleting Post!
+        </p>
+      );
+    }
+    if (this.props.id !== -1 && selectedPost && deleteErr === null) {
       post = (
         <div className="FullPost">
           <h1>{selectedPost.title}</h1>

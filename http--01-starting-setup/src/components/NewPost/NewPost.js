@@ -1,21 +1,32 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
 import "./NewPost.css";
 
 class NewPost extends Component {
   state = {
     title: "",
     body: "",
-    author: "Max"
+    author: "Max",
+    addErr: null
   };
 
   addPostHandler = () => {
-    axios.post('https://jsonplaceholder.typicode.com/posts', this.state)
-    .then(res => console.log(res))
-  }
+    axios
+      .post("https://jsonplaceholder.typicode.com/posts", this.state)
+      .then(res => console.log(res))
+      
+      .catch(err =>
+        this.setState({ addErr: err }, () => {
+          setTimeout(() => this.setState({ addErr: null }), 3000)
+        })
+      );
+  };
   render() {
     return (
       <div className="NewPost">
+        {this.state.addErr && <p style={{ textAlign: "center", color: "red" }}>
+          Error Adding Post!
+        </p>}
         <h1>Add a Post</h1>
         <label>Title</label>
         <input
