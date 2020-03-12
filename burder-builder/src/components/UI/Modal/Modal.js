@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import classes from "./Modal.module.css";
 import Backdrop from "../Backdrop/Backdrop";
-import Auxillary from "../../../hoc/Auxillary";
+import Auxillary from "../../../hoc/Auxillary/Auxillary";
 
 class Modal extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
