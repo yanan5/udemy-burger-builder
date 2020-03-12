@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import Auxillary from "../../hoc/Auxillary";
 import classes from "./Layout.module.css";
@@ -28,3 +29,7 @@ export default class Layout extends React.Component {
     );
   }
 }
+
+Layout.propTypes = {
+  children: PropTypes.any.isRequired
+};
