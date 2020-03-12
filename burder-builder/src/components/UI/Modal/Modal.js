@@ -4,20 +4,28 @@ import classes from "./Modal.module.css";
 import Backdrop from "../Backdrop/Backdrop";
 import Auxillary from "../../../hoc/Auxillary";
 
-const Modal = props => (
-  <Auxillary>
-    <Backdrop modalClosed={props.modalClosed} show={props.show} />
-    <div
-      className={classes.Modal}
-      style={{
-        transform: props.show ? "translateY(0)" : "translateY(-100vh)",
-        opacity: props.show ? "1" : "0"
-      }}
-    >
-      {props.children}
-    </div>
-  </Auxillary>
-);
+class Modal extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.show !== this.props.show;
+  }
+  
+  render() {
+    return (
+      <Auxillary>
+        <Backdrop modalClosed={this.props.modalClosed} show={this.props.show} />
+        <div
+          className={classes.Modal}
+          style={{
+            transform: this.props.show ? "translateY(0)" : "translateY(-100vh)",
+            opacity: this.props.show ? "1" : "0"
+          }}
+        >
+          {this.props.children}
+        </div>
+      </Auxillary>
+    );
+  }
+}
 
 Modal.propTypes = {
   children: PropTypes.any,
