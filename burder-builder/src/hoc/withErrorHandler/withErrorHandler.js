@@ -18,7 +18,6 @@ const withErrorHandler = (Component, axiosInstance) =>
       );
     }
     componentWillUnmount() {
-      console.log("unmount", this.requestInterceptor, this.responseInterceptors);
       axiosInstance.interceptors.request.eject(this.requestInterceptor);
       axiosInstance.interceptors.response.eject(this.responseInterceptors);
     }
