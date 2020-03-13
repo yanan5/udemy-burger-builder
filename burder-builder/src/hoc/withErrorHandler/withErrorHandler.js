@@ -8,14 +8,19 @@ const withErrorHandler = (Component, axiosInstance) =>
     };
     constructor(props) {
       super(props);
-      axiosInstance.interceptors.request.use(req => {
+      this.requestInterceptor = axiosInstance.interceptors.request.use(req => {
         this.setState({ error: false });
         return req;
       });
-      axiosInstance.interceptors.response.use(
+      this.responseInterceptors = axiosInstance.interceptors.response.use(
         res => res,
         error => this.setState({ error })
       );
+    }
+    componentWillUnmount() {
+      console.log("unmount", this.requestInterceptor, this.responseInterceptors);
+      axiosInstance.interceptors.request.eject(this.requestInterceptor);
+      axiosInstance.interceptors.response.eject(this.responseInterceptors);
     }
     closeModal = () => this.setState({ error: false });
     render() {
