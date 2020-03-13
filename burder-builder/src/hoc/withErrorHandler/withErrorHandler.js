@@ -6,7 +6,8 @@ const withErrorHandler = (Component, axiosInstance) =>
     state = {
       error: false
     };
-    componentDidMount() {
+    constructor(props) {
+      super(props);
       axiosInstance.interceptors.request.use(req => {
         this.setState({ error: false });
         return req;

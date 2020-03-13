@@ -30,10 +30,13 @@ const BuildControls = (props) => {
     </div>
 }
 
+BuildControls.defaultProps = {
+  ingredients: {}
+}
 BuildControls.propTypes = {
   addIngredient: PropTypes.func.isRequired,
   disabled: PropTypes.object.isRequired,
-  ingredients: PropTypes.object.isRequired,
+  ingredients: PropTypes.object,
   price: PropTypes.number.isRequired,
   priceList: PropTypes.object.isRequired,
   purchasable: PropTypes.bool.isRequired,

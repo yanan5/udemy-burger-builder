@@ -1,6 +1,12 @@
-import React from 'react';
-import classes from './spinner.module.css'
+import React from "react";
+import classes from "./spinner.module.css";
 
-const spinner = props => <div className={classes.loader}>Loading...</div>;
+const Spinner = props => <div className={classes.loader}>Loading...</div>;
 
-export default spinner;
+const withSpinner = (Component, spinnerState) => props =>
+  Boolean(spinnerState) ? <Component {...props} /> : <Spinner />;
+
+const Loader = props => (Boolean(props.loading) ? props.children : <Spinner />);
+
+export default Spinner;
+export { withSpinner, Loader };
