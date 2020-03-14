@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-
+import Spinner from '../../../hoc/Spinner/Spinner'
 import "./FullPost.css";
 
 class FullPost extends Component {
@@ -8,10 +8,10 @@ class FullPost extends Component {
     selectedPost: null,
     deleteErr: null
   };
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.id !== -1 && this.props.id !== prevProps.id) {
+  componentDidMount() {
+    const id = this.props.match.params.id
       axios
-        .get(`/posts/${this.props.id}`)
+        .get(`/posts/${id}`)
         .then(res =>
           this.setState({
             selectedPost: res.data
@@ -22,7 +22,7 @@ class FullPost extends Component {
             setTimeout(() => this.setState({ deleteErr: null }), 3000)
           })
         );
-    }
+    
   }
   deletePostHandler = () => {
     axios
@@ -44,7 +44,10 @@ class FullPost extends Component {
         </p>
       );
     }
-    if (this.props.id !== -1 && selectedPost && deleteErr === null) {
+    if(selectedPost === null) {
+      post = <Spinner />
+    }
+    if (selectedPost !== null && deleteErr === null) {
       post = (
         <div className="FullPost">
           <h1>{selectedPost.title}</h1>

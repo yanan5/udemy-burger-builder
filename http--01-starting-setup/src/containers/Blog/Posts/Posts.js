@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "../../../axios";
 import Post from "../../../components/Post/Post";
+import { Link } from "react-router-dom";
 import { withSpinner } from "../../../hoc/Spinner/Spinner";
 import "./Posts.css";
 
@@ -18,14 +19,11 @@ class Posts extends Component {
       })
       .catch(err => console.log("get error", err));
   }
-  postSelectedHandler = id => this.setState({ selectedPostId: id });
   render() {
     const posts = this.state.posts.map(post => (
-      <Post
-        clicked={() => this.postSelectedHandler(post.id)}
-        key={post.id}
-        {...post}
-      />
+      <Link key={post.id} to={`/${post.id}`}>
+        <Post {...post} />
+      </Link>
     ));
     const Posts = props => <section className="Posts">{posts}</section>;
     const PostsWithSpinner = withSpinner(Posts, this.state.posts.length);
