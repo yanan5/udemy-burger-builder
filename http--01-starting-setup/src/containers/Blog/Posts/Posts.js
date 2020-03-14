@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "../../../axios";
 import Post from "../../../components/Post/Post";
+import { withSpinner } from "../../../hoc/Spinner/Spinner";
 import "./Posts.css";
 
 class Posts extends Component {
@@ -26,7 +27,9 @@ class Posts extends Component {
         {...post}
       />
     ));
-    return (<section className="Posts">{posts}</section>);
+    const Posts = props => <section className="Posts">{posts}</section>;
+    const PostsWithSpinner = withSpinner(Posts, this.state.posts.length);
+    return <PostsWithSpinner />;
   }
 }
 
