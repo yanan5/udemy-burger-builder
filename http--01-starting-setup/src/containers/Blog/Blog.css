@@ -17,3 +17,6 @@
 .Blogs nav a:active {
   color: #fa923f;
 }
+.Blogs nav a.nav-active {
+  color: blue;
+}
