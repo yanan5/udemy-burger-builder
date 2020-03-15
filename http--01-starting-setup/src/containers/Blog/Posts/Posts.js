@@ -1,7 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { Route } from "react-router-dom";
 import axios from "../../../axios";
 import Post from "../../../components/Post/Post";
+import FullPost from "../FullPost/FullPost";
 import { withSpinner } from "../../../hoc/Spinner/Spinner";
+
 import "./Posts.css";
 
 class Posts extends Component {
@@ -27,7 +30,12 @@ class Posts extends Component {
         {...post}
       />
     ));
-    const Posts = props => <section className="Posts">{posts}</section>;
+    const Posts = props => (
+      <Fragment>
+        <section className="Posts">{posts}</section>
+        <Route exact path="/:id" component={FullPost} />
+      </Fragment>
+    );
     const PostsWithSpinner = withSpinner(Posts, this.state.posts.length);
     return <PostsWithSpinner />;
   }
