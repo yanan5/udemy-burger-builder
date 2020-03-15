@@ -21,7 +21,7 @@ class Posts extends Component {
       })
       .catch(err => console.log("get error", err));
   }
-  handlePostClick = id => this.props.history.push({ pathname: `/${id}` });
+  handlePostClick = id => this.props.history.push({ pathname: `${this.props.match.url}/${id}` });
   render() {
     const posts = this.state.posts.map(post => (
       <Post
@@ -33,7 +33,11 @@ class Posts extends Component {
     const Posts = props => (
       <Fragment>
         <section className="Posts">{posts}</section>
-        <Route exact path="/:id" component={FullPost} />
+        <Route
+          exact
+          path={`${this.props.match.url}/:id`}
+          component={FullPost}
+        />
       </Fragment>
     );
     const PostsWithSpinner = withSpinner(Posts, this.state.posts.length);
