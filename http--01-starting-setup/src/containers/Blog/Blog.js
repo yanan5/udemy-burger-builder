@@ -1,11 +1,16 @@
-import React, { Component } from "react";
-import Posts from "./Posts/Posts";
+import React, { Component, Suspense } from "react";
 import { Route, NavLink, Switch, Redirect } from "react-router-dom";
-import asyncComponent from '../../hoc/asyncComponent';
+import asyncComponent from "../../hoc/asyncComponent";
 
 import "./Blog.css";
 
 const AsyncNewPost = asyncComponent(() => import("./NewPost/NewPost"));
+const Posts = React.lazy(() => import("./Posts/Posts"));
+const PostsWithSuspense = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Posts />
+  </Suspense>
+);
 
 class Blog extends Component {
   render() {
@@ -29,10 +34,9 @@ class Blog extends Component {
         </header>
         <Switch>
           <Route exact path="/new-post" component={AsyncNewPost} />
-          <Route path="/posts" component={Posts} />
+          <Route path="/posts" component={PostsWithSuspense} />
           <Redirect from="/" to="posts" />
         </Switch>
-        
       </div>
     );
   }
