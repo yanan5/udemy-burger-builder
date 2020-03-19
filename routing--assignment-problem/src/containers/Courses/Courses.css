@@ -5,7 +5,10 @@
     width: 80%;
     margin: auto;
 }
-
+.Courses a {
+    text-decoration: none;
+    color: #000;
+}
 .Course {
     border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
