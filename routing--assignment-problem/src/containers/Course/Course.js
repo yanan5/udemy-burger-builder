@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 class Course extends Component {
   render() {
     const search = this.props.location.search.substr(0);
@@ -14,4 +13,4 @@ class Course extends Component {
   }
 }
 
-export default withRouter(Course);
+export default Course;
