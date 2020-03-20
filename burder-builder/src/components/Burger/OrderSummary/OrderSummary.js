@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { Link } from "react-router-dom";
 import Auxillary from "../../../hoc/Auxillary/Auxillary";
 import Button from "../../UI/Button/Button";
-
 const OrderSummary = props => {
   const ingredientSummary = Object.keys(props.ingredients).map(igKey => (
     <li key={igKey}>
@@ -28,9 +28,11 @@ const OrderSummary = props => {
       <Button btnType="Danger" clicked={props.purchaseCancelled}>
         CANCEL
       </Button>
-      <Button btnType="Success" clicked={props.purchaseContinued}>
-        CONTINUE
-      </Button>
+      <Link to="/checkout">
+        <Button btnType="Success" clicked={() => {}}>
+          CONTINUE
+        </Button>
+      </Link>
     </Auxillary>
   );
 };
