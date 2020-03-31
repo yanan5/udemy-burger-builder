@@ -1,10 +1,18 @@
 import React from "react";
 import classes from "./Order.module.css";
-const order = props => (
-  <div className={classes.Order}>
-    <p>Ingredients: Salad (1)</p>
+const order = ({ order: { ingredients, price } }) => (
+  <div className={(classes.Ord, er)}>
     <p>
-      Price: <strong>USD 5.45</strong>
+      Ingredients:
+      {Object.keys(ingredients).map(ingredient => (
+        <span className={classes.Order_Ingredient} key={ingredient}>
+          {ingredient} ({ingredients[ingredient]})
+        </span>
+      ))}
+    </p>
+
+    <p>
+      Price: <strong>USD {price}</strong>
     </p>
   </div>
 );

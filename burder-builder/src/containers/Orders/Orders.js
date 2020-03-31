@@ -22,8 +22,9 @@ class Orders extends Component {
     return (
       <Loader loading={this.state.orders}>
         <div>
-          <Order />
-          <Order />
+          {this.state.orderKeys.map(orderKey => (
+            <Order key={orderKey} order={this.state.orders[orderKey]} />
+          ))}
         </div>
       </Loader>
     );
