@@ -16,7 +16,10 @@ class ContactData extends Component {
           type: "text",
           placeholder: "Your Name"
         },
-        value: ""
+        value: "",
+        validation: {
+          required: true
+        }
       },
       street: {
         elementType: "input",
@@ -25,7 +28,11 @@ class ContactData extends Component {
           type: "text",
           placeholder: "Your Street"
         },
-        value: ""
+        value: "",
+        validation: {
+          required: true
+        },
+        valid: false
       },
       zipCode: {
         elementType: "input",
@@ -34,7 +41,13 @@ class ContactData extends Component {
           type: "text",
           placeholder: "Your Zip Code"
         },
-        value: ""
+        value: "",
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 6
+        },
+        valid: false
       },
       country: {
         elementType: "input",
@@ -43,7 +56,11 @@ class ContactData extends Component {
           type: "text",
           placeholder: "Your Country"
         },
-        value: ""
+        value: "",
+        validation: {
+          required: true
+        },
+        valid: false
       },
       email: {
         elementType: "email",
@@ -52,7 +69,11 @@ class ContactData extends Component {
           type: "email",
           placeholder: "Your Email"
         },
-        value: ""
+        value: "",
+        validation: {
+          required: true
+        },
+        valid: false
       },
       deliveryMethod: {
         elementType: "select",
@@ -104,12 +125,26 @@ class ContactData extends Component {
         ...this.state.orderForm,
         [fieldKeyInState]: {
           ...selectedFieldValueInState,
-          value: e.target.value
+          value: e.target.value,
+          valid: this.checkValidity(e.target.value, selectedFieldValueInState.validation)
         }
       }
     };
     this.setState({...updatedState});
   };
+  checkValidity = (value, rules) => {
+    let isValid = false;
+    if (rules.required) {
+      isValid = value.trim() !== '';
+    }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength
+    }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength
+    }
+    return isValid;
+  }
   render() {
     const { orderForm } = this.state;
     const formFields = [];
