@@ -11,10 +11,13 @@ const Button = props => (
   </button>
 );
 
+Button.defaultProps = {
+  clicked: () => {}
+}
 Button.propTypes = {
   btnType: PropTypes.string.isRequired,
   children: PropTypes.any,
-  clicked: PropTypes.func.isRequired
+  clicked: PropTypes.func
 };
 
 export default Button;
