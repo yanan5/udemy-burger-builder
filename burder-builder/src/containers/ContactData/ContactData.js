@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import Button from '../../components/UI/Button/Button';
+import Button from "../../components/UI/Button/Button";
 import { Loader } from "../../components/UI/Spinner/spinner";
-import classes from './ContactData.module.css';
+import Input from "../../components/UI/Input/input";
+
+import classes from "./ContactData.module.css";
 import axios from "../../axios-orders";
 
 class ContactData extends Component {
@@ -14,7 +16,7 @@ class ContactData extends Component {
     },
     loading: false
   };
-  orderHandler = (e) => {
+  orderHandler = e => {
     e.preventDefault();
     this.setState({
       loading: true
@@ -37,25 +39,51 @@ class ContactData extends Component {
       .post("/orders.json", order)
       .then(res => {
         this.setState({ loading: false });
-        this.props.history.push("/")
+        this.props.history.push("/");
       })
       .catch(err => this.setState({ loading: false }));
-  }
+  };
   render() {
-    return(
+    return (
       <Loader loading={!this.state.loading}>
-      <div className={classes.ContactData}>
-        <h4>Enter Your Contact Data</h4>
-        <form>
-          <input type='text' name='name' placeholder='Your Name' />
-          <input type='email' name='Email' placeholder='Your email' />
-          <input type='text' name='street' placeholder='Your Street' />
-          <input type='text' name='postal' placeholder='Your Postal Code' />
-          <Button btnType='Success' clicked={this.orderHandler}>ORDER</Button>
-        </form>
-      </div>
+        <div className={classes.ContactData}>
+          <h4>Enter Your Contact Data</h4>
+          <form>
+            <Input
+              input_type="input"
+              label="Name"
+              type="text"
+              name="name"
+              placeholder="Your Name"
+            />
+            <Input
+              input_type="input"              
+              label="Email"
+              type="email"
+              name="Email"
+              placeholder="Your email"
+            />
+            <Input
+              input_type="input"
+              label="Street"
+              type="text"
+              name="street"
+              placeholder="Your Street"
+            />
+            <Input
+              input_type="input"
+              label="Postal Code"
+              type="text"
+              name="postal"
+              placeholder="Your Postal Code"
+            />
+            <Button btnType="Success" clicked={this.orderHandler}>
+              ORDER
+            </Button>
+          </form>
+        </div>
       </Loader>
-    )
+    );
   }
 }
 

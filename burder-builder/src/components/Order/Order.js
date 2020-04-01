@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./Order.module.css";
 const order = ({ order: { ingredients, price } }) => (
-  <div className={(classes.Ord, er)}>
+  <div className={(classes.Order)}>
     <p>
       Ingredients:
       {Object.keys(ingredients).map(ingredient => (
