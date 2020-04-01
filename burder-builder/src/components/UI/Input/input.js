@@ -4,9 +4,13 @@ import classes from "./input.module.css";
 const input = props => {
   let inputElement = null;
   const { elementType, label, elementConfig, value, onChange } = props;
-  const inputClasses = [classes.InputElement]
-  if (props.invalid && props.shouldValidate) {
-    inputClasses.push(classes.Invalid)
+  const inputClasses = [classes.InputElement];
+  let validationError = null;
+  if (props.invalid && props.shouldValidate && props.touched) {
+    inputClasses.push(classes.Invalid);
+    validationError = (
+      <p className={classes.ValidationError}>Please enter a valid {label}</p>
+    );
   }
   switch (elementType) {
     case "input":
@@ -16,7 +20,7 @@ const input = props => {
           className={inputClasses.join(" ")}
           {...elementConfig}
           value={value}
-          onChange={onChange}          
+          onChange={onChange}
         />
       );
       break;
@@ -32,8 +36,11 @@ const input = props => {
       break;
     case "select":
       inputElement = (
-        <select className={inputClasses.join(" ")} value={value}
-        onChange={onChange}>
+        <select
+          className={inputClasses.join(" ")}
+          value={value}
+          onChange={onChange}
+        >
           {elementConfig.options.map(option => (
             <option key={option.value} value={option.value}>
               {option.displayValue}
@@ -55,6 +62,7 @@ const input = props => {
     <div className={classes.Input}>
       <label className={classes.Label}>{label}</label>
       {inputElement}
+      {validationError}
     </div>
   );
 };

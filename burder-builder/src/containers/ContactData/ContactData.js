@@ -19,7 +19,9 @@ class ContactData extends Component {
         value: "",
         validation: {
           required: true
-        }
+        },
+        valid: false,
+        touched: false
       },
       street: {
         elementType: "input",
@@ -32,7 +34,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       zipCode: {
         elementType: "input",
@@ -47,7 +50,8 @@ class ContactData extends Component {
           minLength: 5,
           maxLength: 6
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       country: {
         elementType: "input",
@@ -60,7 +64,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       email: {
         elementType: "email",
@@ -73,7 +78,8 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       deliveryMethod: {
         elementType: "select",
@@ -126,7 +132,8 @@ class ContactData extends Component {
         [fieldKeyInState]: {
           ...selectedFieldValueInState,
           value: e.target.value,
-          valid: this.checkValidity(e.target.value, selectedFieldValueInState.validation)
+          valid: this.checkValidity(e.target.value, selectedFieldValueInState.validation),
+          touched: true
         }
       }
     };
@@ -157,6 +164,7 @@ class ContactData extends Component {
           onChange={this.onChange(fieldKey)}
           shouldValidate={fieldValue.validation}
           invalid={!fieldValue.valid}
+          touched={fieldValue.touched}
         />
       );
     }
