@@ -96,9 +96,12 @@ class ContactData extends Component {
             }
           ]
         },
-        value: "cheapest"
+        value: "cheapest",
+        validation: {},
+        valid: true
       }
     },
+    formIsValid: false,
     loading: false
   };
   orderHandler = e => {
@@ -106,10 +109,10 @@ class ContactData extends Component {
     this.setState({
       loading: true
     });
-    const {orderForm} = this.state;
+    const { orderForm } = this.state;
     const orderData = {};
     for (let key in orderForm) {
-      orderData[key] = orderForm[key].value
+      orderData[key] = orderForm[key].value;
     }
     const order = {
       ingredients: this.props.ingredients,
@@ -132,26 +135,33 @@ class ContactData extends Component {
         [fieldKeyInState]: {
           ...selectedFieldValueInState,
           value: e.target.value,
-          valid: this.checkValidity(e.target.value, selectedFieldValueInState.validation),
+          valid: this.checkValidity(
+            e.target.value,
+            selectedFieldValueInState.validation
+          ),
           touched: true
         }
       }
     };
-    this.setState({...updatedState});
+    let formIsValid = true;
+    for (let fieldKey in updatedState.orderForm) {
+      formIsValid = updatedState.orderForm[fieldKey].valid && formIsValid;
+    };
+    this.setState({ ...updatedState, formIsValid });
   };
   checkValidity = (value, rules) => {
     let isValid = true;
     if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
+      isValid = value.trim() !== "" && isValid;
     }
     if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid
+      isValid = value.length >= rules.minLength && isValid;
     }
     if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid
+      isValid = value.length <= rules.maxLength && isValid;
     }
     return isValid;
-  }
+  };
   render() {
     const { orderForm } = this.state;
     const formFields = [];
@@ -174,9 +184,7 @@ class ContactData extends Component {
           <h4>Enter Your Contact Data</h4>
           <form onSubmit={this.orderHandler}>
             {formFields}
-            <Button btnType="Success">
-              ORDER
-            </Button>
+            <Button disabled={!this.state.formIsValid} btnType="Success">ORDER</Button>
           </form>
         </div>
       </Loader>
