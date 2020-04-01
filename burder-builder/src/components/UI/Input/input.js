@@ -3,7 +3,7 @@ import classes from "./input.module.css";
 
 const input = props => {
   let inputElement = null;
-  const { elementType, label, elementConfig, value } = props;
+  const { elementType, label, elementConfig, value, onChange } = props;
   switch (elementType) {
     case "input":
     case "email":
@@ -12,6 +12,7 @@ const input = props => {
           className={classes.InputElement}
           {...elementConfig}
           value={value}
+          onChange={onChange}          
         />
       );
       break;
@@ -21,12 +22,14 @@ const input = props => {
           className={classes.InputElement}
           {...elementConfig}
           value={value}
+          onChange={onChange}
         />
       );
       break;
     case "select":
       inputElement = (
-        <select className={classes.InputElement} value={value}>
+        <select className={classes.InputElement} value={value}
+        onChange={onChange}>
           {elementConfig.options.map(option => (
             <option key={option.value} value={option.value}>
               {option.displayValue}

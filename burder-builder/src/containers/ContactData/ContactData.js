@@ -91,12 +91,32 @@ class ContactData extends Component {
       })
       .catch(err => this.setState({ loading: false }));
   };
+  onChange = fieldKeyInState => e => {
+    const selectedFieldValueInState = this.state.orderForm[fieldKeyInState];
+    const updatedState = {
+      orderForm: {
+        ...this.state.orderForm,
+        [fieldKeyInState]: {
+          ...selectedFieldValueInState,
+          value: e.target.value
+        }
+      }
+    };
+    this.setState({...updatedState});
+    console.log(fieldKeyInState, e.target.value);
+  };
   render() {
     const { orderForm } = this.state;
     const formFields = [];
     for (let fieldKey in orderForm) {
       const fieldValue = orderForm[fieldKey];
-      formFields.push(<Input key={fieldKey} {...fieldValue} />);
+      formFields.push(
+        <Input
+          key={fieldKey}
+          {...fieldValue}
+          onChange={this.onChange(fieldKey)}
+        />
+      );
     }
     return (
       <Loader loading={!this.state.loading}>
