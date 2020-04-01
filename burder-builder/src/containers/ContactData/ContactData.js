@@ -155,6 +155,8 @@ class ContactData extends Component {
           key={fieldKey}
           {...fieldValue}
           onChange={this.onChange(fieldKey)}
+          shouldValidate={fieldValue.validation}
+          invalid={!fieldValue.valid}
         />
       );
     }
