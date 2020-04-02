@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import {
   onInc,
@@ -20,7 +20,7 @@ const Counter = ({
   onDecByVal,
   onStore,
   onDelete,
-  result
+  results
 }) => (
   <div>
     <CounterOutput value={counter} />
@@ -29,10 +29,10 @@ const Counter = ({
     <CounterControl label="Add 5" clicked={onIncByVal} />
     <CounterControl label="Subtract 5" clicked={onDecByVal} />
     <div>
-      <CounterControl label="Store Result" clicked={onStore} />
+      <CounterControl label="Store Result" clicked={() => onStore(counter)} />
     </div>
     <ul>
-      {result.map((val, ind) => (
+      {results.map((val, ind) => (
         <li key={`${val}-${ind}`}>
           {val} - <CounterControl label="X" clicked={() => onDelete(ind)} />
         </li>
@@ -43,7 +43,7 @@ const Counter = ({
 
 const mapStateToProps = state => ({
   counter: state.counter,
-  result: state.result
+  results: state.results
 });
 const mapDispatchToProps = {
   onInc,
