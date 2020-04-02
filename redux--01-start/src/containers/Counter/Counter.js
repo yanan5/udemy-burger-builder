@@ -4,62 +4,23 @@ import { connect } from "react-redux";
 import CounterControl from "../../components/CounterControl/CounterControl";
 import CounterOutput from "../../components/CounterOutput/CounterOutput";
 
-class Counter extends Component {
-  state = {
-    counter: 0
-  };
-
-  counterChangedHandler = (action, value) => {
-    switch (action) {
-      case "inc":
-        this.setState(prevState => {
-          return { counter: prevState.counter + 1 };
-        });
-        break;
-      case "dec":
-        this.setState(prevState => {
-          return { counter: prevState.counter - 1 };
-        });
-        break;
-      case "add":
-        this.setState(prevState => {
-          return { counter: prevState.counter + value };
-        });
-        break;
-      case "sub":
-        this.setState(prevState => {
-          return { counter: prevState.counter - value };
-        });
-        break;
-    }
-  };
-
-  render() {
-    return (
-      <div>
-        <CounterOutput value={this.props.counter} />
-        <CounterControl
-          label="Increment"
-          clicked={() => this.counterChangedHandler("inc")}
-        />
-        <CounterControl
-          label="Decrement"
-          clicked={() => this.counterChangedHandler("dec")}
-        />
-        <CounterControl
-          label="Add 5"
-          clicked={() => this.counterChangedHandler("add", 5)}
-        />
-        <CounterControl
-          label="Subtract 5"
-          clicked={() => this.counterChangedHandler("sub", 5)}
-        />
-      </div>
-    );
-  }
-}
+const Counter = ({ counter, onInc, onDec, onInc5, onDec5 }) => (
+  <div>
+    <CounterOutput value={counter} />
+    <CounterControl label="Increment" clicked={onInc} />
+    <CounterControl label="Decrement" clicked={onDec} />
+    <CounterControl label="Add 5" clicked={onInc5} />
+    <CounterControl label="Subtract 5" clicked={onDec5} />
+  </div>
+);
 
 const mapStateToProps = state => ({
   counter: state.counter
 });
-export default connect(mapStateToProps)(Counter);
+const mapDispatchToProps = dispatch => ({
+  onInc: () => dispatch({ type: "INC" }),
+  onDec: () => dispatch({ type: "DEC" }),
+  onInc5: () => dispatch({ type: "INC5", payload: { value: 5 } }),
+  onDec5: () => dispatch({ type: "DEC5", payload: { value: 5 } })
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
