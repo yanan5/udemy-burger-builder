@@ -1,26 +1,56 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {
+  onInc,
+  onDec,
+  onIncByVal,
+  onDecByVal,
+  onStore,
+  onDelete
+} from "../../actions/action";
 
 import CounterControl from "../../components/CounterControl/CounterControl";
 import CounterOutput from "../../components/CounterOutput/CounterOutput";
 
-const Counter = ({ counter, onInc, onDec, onInc5, onDec5 }) => (
+const Counter = ({
+  counter,
+  onInc,
+  onDec,
+  onIncByVal,
+  onDecByVal,
+  onStore,
+  onDelete,
+  result
+}) => (
   <div>
     <CounterOutput value={counter} />
     <CounterControl label="Increment" clicked={onInc} />
     <CounterControl label="Decrement" clicked={onDec} />
-    <CounterControl label="Add 5" clicked={onInc5} />
-    <CounterControl label="Subtract 5" clicked={onDec5} />
+    <CounterControl label="Add 5" clicked={onIncByVal} />
+    <CounterControl label="Subtract 5" clicked={onDecByVal} />
+    <div>
+      <CounterControl label="Store Result" clicked={onStore} />
+    </div>
+    <ul>
+      {result.map((val, ind) => (
+        <li key={`${val}-${ind}`}>
+          {val} - <CounterControl label="X" clicked={() => onDelete(ind)} />
+        </li>
+      ))}
+    </ul>
   </div>
 );
 
 const mapStateToProps = state => ({
-  counter: state.counter
+  counter: state.counter,
+  result: state.result
 });
-const mapDispatchToProps = dispatch => ({
-  onInc: () => dispatch({ type: "INC" }),
-  onDec: () => dispatch({ type: "DEC" }),
-  onInc5: () => dispatch({ type: "INC5", payload: { value: 5 } }),
-  onDec5: () => dispatch({ type: "DEC5", payload: { value: 5 } })
-});
+const mapDispatchToProps = {
+  onInc,
+  onDec,
+  onIncByVal,
+  onDecByVal,
+  onStore,
+  onDelete
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
