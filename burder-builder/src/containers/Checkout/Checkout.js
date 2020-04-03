@@ -25,7 +25,7 @@ class Checkout extends React.Component {
           <Route
             exact
             path={`${this.props.match.path}/contact-data`}
-            render={props => <ContactData {...props} />}
+            component={ContactData}
           />
         </Loader>
       </div>
