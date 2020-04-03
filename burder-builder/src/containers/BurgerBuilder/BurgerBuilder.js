@@ -17,7 +17,6 @@ import {
 
 class BurgerBuilder extends Component {
   state = {
-    purchasable: false,
     purchasing: false,
     loading: false,
     error: false
@@ -28,24 +27,16 @@ class BurgerBuilder extends Component {
       .then(res => this.props.onFetchIngredientFulfilled(res.data))
       .catch(error => this.setState({ error }));
   }
-  componentDidUpdate(prevProps) {
-    const { ingredients } = this.props;
-    const { ingredients: prevIngredients } = prevProps;
-    if (JSON.stringify(prevIngredients) !== JSON.stringify(ingredients)) {
-      this.updatePurchaseState(ingredients);
-    }
-  }
+
   updatePurchaseState(ingredients) {
-    const sum = Object.keys(ingredients)
+    const sum = ingredients && Object.keys(ingredients)
       .map(igKey => {
         return ingredients[igKey];
       })
       .reduce((sum, val) => {
         return sum + val;
       }, 0);
-    this.setState({
-      purchasable: sum > 0
-    });
+    return ingredients && sum > 0
   }
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -61,7 +52,7 @@ class BurgerBuilder extends Component {
     });
   };
   render() {
-    const { error, purchasing, purchasable } = this.state;
+    const { error, purchasing } = this.state;
     const {
       ingredients,
       totalPrice,
@@ -76,6 +67,7 @@ class BurgerBuilder extends Component {
     }
     let OrderSummaryWithSpinner = withSpinner(OrderSummary, ingredients);
     let BurgerWithSpinner = withSpinner(Burger, ingredients);
+    const purchasable = this.updatePurchaseState(ingredients);
     return (
       <Auxillary>
         {error && <p>Cannot load ingredients</p>}
