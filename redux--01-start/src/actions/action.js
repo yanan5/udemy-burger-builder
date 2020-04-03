@@ -8,13 +8,20 @@ export const REMOVE_RESULT = "REMOVE_RESULT";
 export const onInc = () => ({ type: INC });
 export const onDec = () => ({ type: DEC });
 export const onIncByVal = () => ({ type: INC_BY_VAL, payload: { value: 5 } });
+
 export const onDecByVal = () => ({ type: DEC_BY_VAL, payload: { value: 5 } });
-export const onStore = counterVal => ({
-  type: SAVE_RESULT,
-  payload: {
-    value: counterVal
-  }
-});
+
+export const onStore = counterVal => dispatch => {
+  setTimeout(() => {
+    dispatch({
+      type: SAVE_RESULT,
+      payload: {
+        value: counterVal
+      }
+    })
+  }, 2000)
+}
+
 export const onDelete = ind => ({
   type: REMOVE_RESULT,
   payload: { value: ind }

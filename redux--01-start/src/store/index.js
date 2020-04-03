@@ -1,5 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import reducer from "./reducer";
+import thunk from 'redux-thunk';
 
 const logger = store => next => action => {
   console.log("-------------------------------")
@@ -10,6 +12,10 @@ const logger = store => next => action => {
   console.log("-------------------------------")
   return result
 }
-const store = createStore(reducer, applyMiddleware(logger));
+const composeEnhancers = composeWithDevTools({});
+const store = createStore(reducer, composeEnhancers(
+  applyMiddleware(logger, thunk),
+  // other store enhancers if any
+));
 
 export default store;
