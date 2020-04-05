@@ -4,16 +4,11 @@ import axios from "../../axios-orders";
 import { Loader } from "../../components/UI/Spinner/spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { connect } from "react-redux";
-import { onFetchOrdersFulfilled, onFetchOrdersPending } from "../../actions/action";
+import { initOrders } from "../../actions/action";
 
 class Orders extends Component {
   componentDidMount() {
-    this.props.onFetchOrdersPending()
-    axios.get("/orders.json").then(res => {
-      if (res.data) {
-        this.props.onFetchOrdersFulfilled(res.data);
-      }
-    });
+    this.props.initOrders();
   }
   render() {
     const { data, keys } = this.props;
@@ -34,8 +29,7 @@ const mapStateToProps = ({ orders: { data, keys } }) => ({
   keys
 });
 const mapDispatchToProps = {
-  onFetchOrdersFulfilled,
-  onFetchOrdersPending
+  initOrders
 };
 export default connect(
   mapStateToProps,

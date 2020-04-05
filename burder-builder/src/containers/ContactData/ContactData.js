@@ -5,6 +5,9 @@ import Input from "../../components/UI/Input/input";
 import { connect } from "react-redux";
 import classes from "./ContactData.module.css";
 import axios from "../../axios-orders";
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import {saveOrder} from '../../actions/action';
+
 
 class ContactData extends Component {
   state = {
@@ -101,14 +104,10 @@ class ContactData extends Component {
         valid: true
       }
     },
-    formIsValid: false,
-    loading: false
+    formIsValid: false
   };
   orderHandler = e => {
     e.preventDefault();
-    this.setState({
-      loading: true
-    });
     const { orderForm } = this.state;
     const orderData = {};
     for (let key in orderForm) {
@@ -119,13 +118,7 @@ class ContactData extends Component {
       price: this.props.totalPrice,
       orderData
     };
-    axios
-      .post("/orders.json", order)
-      .then(res => {
-        this.setState({ loading: false });
-        this.props.history.push("/");
-      })
-      .catch(err => this.setState({ loading: false }));
+    this.props.saveOrder(order);
   };
   onChange = fieldKeyInState => e => {
     const selectedFieldValueInState = this.state.orderForm[fieldKeyInState];
@@ -179,7 +172,7 @@ class ContactData extends Component {
       );
     }
     return (
-      <Loader loading={!this.state.loading}>
+      <Loader loading={!this.props.loading}>
         <div className={classes.ContactData}>
           <h4>Enter Your Contact Data</h4>
           <form onSubmit={this.orderHandler}>
@@ -192,9 +185,12 @@ class ContactData extends Component {
   }
 }
 
-const mapStateToProps = ({ ingredients, totalPrice }) => ({
+const mapStateToProps = ({ ingredients, totalPrice, loading }) => ({
   ingredients,
-  totalPrice
+  totalPrice,
+  loading
 });
-
-export default connect(mapStateToProps,null)(ContactData);
+const mapDispatchToProps = {
+  saveOrder
+}
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(ContactData, axios));

@@ -23,6 +23,8 @@ const ingredients = (state = null, action) => {
         ...state,
         ...action.payload.value
       };
+    case actionTypes.SAVE_ORDER_FULFILLED:
+      return null;
     default:
       return state;
   }
