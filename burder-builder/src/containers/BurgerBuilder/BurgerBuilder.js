@@ -4,7 +4,6 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Auxillary from "../../hoc/Auxillary/Auxillary";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
-import axios from "../../axios-orders";
 import { withSpinner, Loader } from "../../components/UI/Spinner/spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import INGREDIENT_PRICES from "../../constants/constants";
@@ -12,31 +11,28 @@ import { connect } from "react-redux";
 import {
   onAddIngredient,
   onDeleteIngredient,
-  onFetchIngredientFulfilled
+  initIngredients
 } from "../../actions/action";
+import axios from '../../axios-orders';
+
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false,
-    loading: false,
-    error: false
+    purchasing: false
   };
   componentDidMount() {
-    axios
-      .get("/ingredients.json")
-      .then(res => this.props.onFetchIngredientFulfilled(res.data))
-      .catch(error => this.setState({ error }));
+    this.props.initIngredients()
   }
 
   updatePurchaseState(ingredients) {
-    const sum = ingredients && Object.keys(ingredients)
+    const sum = ingredients ? Object.keys(ingredients)
       .map(igKey => {
         return ingredients[igKey];
       })
       .reduce((sum, val) => {
         return sum + val;
-      }, 0);
-    return ingredients && sum > 0
+      }, 0) : -1;
+    return sum > 0
   }
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -52,12 +48,13 @@ class BurgerBuilder extends Component {
     });
   };
   render() {
-    const { error, purchasing } = this.state;
+    const { purchasing } = this.state;
     const {
       ingredients,
       totalPrice,
       onAddIngredient,
-      onDeleteIngredient
+      onDeleteIngredient,
+      error,
     } = this.props;
     const disabledInfo = {
       ...ingredients
@@ -101,14 +98,15 @@ class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = ({ ingredients, totalPrice }) => ({
+const mapStateToProps = ({ ingredients, totalPrice, error }) => ({
   ingredients,
-  totalPrice
+  totalPrice,
+  error
 });
 const mapDispatchToProps = {
   onAddIngredient,
   onDeleteIngredient,
-  onFetchIngredientFulfilled
+  initIngredients
 };
 export default connect(
   mapStateToProps,
