@@ -62,13 +62,14 @@ export const onFetchOrdersPending = () => ({
   type: FETCH_ORDERS_PENDING,
 });
 
-export const initOrders = () => (dispatch) => {
+export const fetchOrders = (token) => (dispatch) => {
   dispatch(onFetchOrdersPending());
-  return axios.get("/orders.json").then((res) => {
-    if (res.data) {
+  return axios.get(`/orders.json?auth=${token}`)
+  .then((res) => {
+    if (res && res.data) {
       dispatch(onFetchOrdersFulfilled(res.data));
     }
-  });
+  })
 };
 
 export const saveOrder = (order) => (dispatch) => {

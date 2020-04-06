@@ -14,7 +14,10 @@ const withErrorHandler = (Component, axiosInstance) =>
       });
       this.responseInterceptors = axiosInstance.interceptors.response.use(
         res => res,
-        error => this.setState({ error })
+        error => {
+          this.setState({ error });
+          return error
+        }
       );
     }
     componentWillUnmount() {
