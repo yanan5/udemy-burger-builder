@@ -10,6 +10,9 @@ export const FETCH_ORDERS_PENDING = "FETCH_ORDERS_PENDING";
 export const SAVE_ORDER_PENDING = "SAVE_ORDER_PENDING";
 export const SAVE_ORDER_FULFILLED = "SAVE_ORDER_FULFILLED";
 export const SAVE_ORDER_REJECTED = "SAVE_ORDER_REJECTED";
+export const AUTH_START = "AUTH_START";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAIL = "AUTH_FAIL";
 
 export const onAddIngredient = (type) => ({
   type: ADD_INGREDIENT,
@@ -75,3 +78,26 @@ export const saveOrder = order => (dispatch) => {
     })
     .catch((err) => dispatch({ type: SAVE_ORDER_REJECTED }));
 };
+
+export const authStart = () => ({
+  type: AUTH_START
+})
+
+export const authSuccess = (authData) => ({
+  type: AUTH_SUCCESS,
+  payload: {
+    value: authData
+  }
+})
+
+export const authFail = (err) => ({
+  type: AUTH_FAIL,
+  payload: {
+    value: err
+  }
+})
+
+export const auth = (email, pwd) => dispatch => {
+  dispatch(authStart());
+  console.log("from auth action", email, pwd);
+}
