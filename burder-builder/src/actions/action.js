@@ -1,4 +1,5 @@
 import axios from "../axios-orders";
+import ax from "axios";
 
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const DELETE_INGREDIENT = "DELETE_INGREDIENT";
@@ -69,7 +70,7 @@ export const initOrders = () => (dispatch) => {
   });
 };
 
-export const saveOrder = order => (dispatch) => {
+export const saveOrder = (order) => (dispatch) => {
   dispatch({ type: SAVE_ORDER_PENDING });
   return axios
     .post("/orders.json", order)
@@ -80,24 +81,37 @@ export const saveOrder = order => (dispatch) => {
 };
 
 export const authStart = () => ({
-  type: AUTH_START
-})
+  type: AUTH_START,
+});
 
 export const authSuccess = (authData) => ({
   type: AUTH_SUCCESS,
   payload: {
-    value: authData
-  }
-})
+    value: authData,
+  },
+});
 
 export const authFail = (err) => ({
   type: AUTH_FAIL,
   payload: {
-    value: err
-  }
-})
+    value: err,
+  },
+});
 
-export const auth = (email, pwd) => dispatch => {
+export const auth = (email, password) => (dispatch) => {
   dispatch(authStart());
-  console.log("from auth action", email, pwd);
-}
+  console.log("from auth action", email, password);
+  ax.post(
+    `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDOjFVwYcCEv1k1FumTipxjmxXqNKZzljE
+  `,
+    { email, password, returnSecureToken: true }
+  )
+    .then((res) => {
+      console.log("AUTH SUCCESS", res);
+      dispatch(authSuccess(res));
+    })
+    .catch((err) => {
+      console.log("AUTH FAILED", err);
+      dispatch(authFail(err));
+    });
+};
