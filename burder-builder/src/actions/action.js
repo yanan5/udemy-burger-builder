@@ -101,7 +101,6 @@ export const authFail = (error) => ({
 
 export const auth = (email, password, isSignUp) => (dispatch) => {
   dispatch(authStart());
-  console.log("Action", email, password, isSignUp)
   let signUp = "signInWithPassword";
   if (isSignUp) {
     signUp = "signUp";
@@ -110,11 +109,9 @@ export const auth = (email, password, isSignUp) => (dispatch) => {
   `;
   ax.post(url, { email, password, returnSecureToken: true })
     .then((res) => {
-      console.log("AUTH SUCCESS", res);
       dispatch(authSuccess(res.data));
     })
-    .catch((err) => {
-      console.log("AUTH FAILED", err);
-      dispatch(authFail(err));
+    .catch((error) => {
+      dispatch(authFail(error.response.data.error));
     });
 };

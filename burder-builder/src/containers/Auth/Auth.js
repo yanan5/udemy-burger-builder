@@ -4,6 +4,7 @@ import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css";
 import { auth } from "../../actions/action";
 import { connect } from "react-redux";
+import Spinner from "../../components/UI/Spinner/spinner";
 
 class Auth extends Component {
   state = {
@@ -59,6 +60,7 @@ class Auth extends Component {
     return isValid;
   };
   onChange = (fieldNameInState) => (e) => {
+    console.log(fieldNameInState, e.target.value);
     const fieldValueInState = this.state.controls[fieldNameInState];
     const updatedState = {
       controls: {
@@ -90,13 +92,13 @@ class Auth extends Component {
     this.props.auth(emailVal, passwordVal, isSignUp);
   };
   onSwitchSignInHandler = (e) => {
-    console.log("onSwitchSignInHandler", this.state);
     this.setState((prevState) => ({
       isSignUp: !prevState.isSignUp,
     }));
   };
   render() {
     const { controls } = this.state;
+    const { loading, error } = this.props;
     const formFields = [];
     for (let fieldKey in controls) {
       const fieldValue = controls[fieldKey];
@@ -111,13 +113,25 @@ class Auth extends Component {
         />
       );
     }
+    const formOrSpinnerComp = loading ? (
+      <Spinner />
+    ) : (
+      <form onSubmit={this.onSubmitHandler}>
+        {formFields}
+        <Button btnType="Success">SUBMIT</Button>
+      </form>
+    );
+    let errorMessage = null;
+    if (error) {
+      errorMessage= <p style={{
+        backgroundColor: 'red',
+        color: '#FFF'
+      }}>{error.message}</p>
+    }
     return (
       <div className={classes.Auth}>
-        <form onSubmit={this.onSubmitHandler}>
-          {formFields}
-          <Button btnType="Success">SUBMIT</Button>
-        </form>
-
+        {errorMessage}
+        {formOrSpinnerComp}
         <Button btnType="Danger" onClick={this.onSwitchSignInHandler}>
           Switch To {this.state.isSignUp ? "SignIn" : "SignUp"}
         </Button>
@@ -126,7 +140,11 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = ({ auth: { loading, error } }) => ({
+  loading,
+  error,
+});
 const mapDispatchToProps = {
   auth,
 };
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
