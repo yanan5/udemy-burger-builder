@@ -98,14 +98,16 @@ export const authFail = (err) => ({
   },
 });
 
-export const auth = (email, password) => (dispatch) => {
+export const auth = (email, password, isSignUp) => (dispatch) => {
   dispatch(authStart());
-  console.log("from auth action", email, password);
-  ax.post(
-    `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDOjFVwYcCEv1k1FumTipxjmxXqNKZzljE
-  `,
-    { email, password, returnSecureToken: true }
-  )
+  console.log("Action", email, password, isSignUp)
+  let signUp = "signInWithPassword";
+  if (isSignUp) {
+    signUp = "signUp";
+  }
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:${signUp}?key=AIzaSyDOjFVwYcCEv1k1FumTipxjmxXqNKZzljE
+  `;
+  ax.post(url, { email, password, returnSecureToken: true })
     .then((res) => {
       console.log("AUTH SUCCESS", res);
       dispatch(authSuccess(res));

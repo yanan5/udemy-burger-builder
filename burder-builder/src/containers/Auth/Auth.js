@@ -39,6 +39,7 @@ class Auth extends Component {
         touched: false,
       },
     },
+    isSignUp: true,
   };
   checkValidity = (value, rules) => {
     let isValid = true;
@@ -81,11 +82,18 @@ class Auth extends Component {
   };
   onSubmitHandler = (e) => {
     e.preventDefault();
+    const { controls, isSignUp } = this.state;
     const {
       email: { value: emailVal },
       password: { value: passwordVal },
-    } = this.state.controls;
-    this.props.auth(emailVal, passwordVal);
+    } = controls;
+    this.props.auth(emailVal, passwordVal, isSignUp);
+  };
+  onSwitchSignInHandler = (e) => {
+    console.log("onSwitchSignInHandler", this.state);
+    this.setState((prevState) => ({
+      isSignUp: !prevState.isSignUp,
+    }));
   };
   render() {
     const { controls } = this.state;
@@ -109,6 +117,10 @@ class Auth extends Component {
           {formFields}
           <Button btnType="Success">SUBMIT</Button>
         </form>
+
+        <Button btnType="Danger" onClick={this.onSwitchSignInHandler}>
+          Switch To {this.state.isSignUp ? "SignIn" : "SignUp"}
+        </Button>
       </div>
     );
   }

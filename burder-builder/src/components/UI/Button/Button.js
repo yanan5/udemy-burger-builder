@@ -5,7 +5,7 @@ import classes from "./Button.module.css";
 const Button = props => (
   <button
     className={[classes.Button, classes[props.btnType]].join(" ")}
-    onClick={props.clicked}
+    onClick={props.onClick}
     disabled={props.disabled}
   >
     {props.children}
@@ -13,12 +13,12 @@ const Button = props => (
 );
 
 Button.defaultProps = {
-  clicked: () => {}
+  onClick: () => {}
 }
 Button.propTypes = {
   btnType: PropTypes.string.isRequired,
   children: PropTypes.any,
-  clicked: PropTypes.func
+  onClick: PropTypes.func
 };
 
 export default Button;
