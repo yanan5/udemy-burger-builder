@@ -87,14 +87,15 @@ export const authStart = () => ({
 export const authSuccess = (authData) => ({
   type: AUTH_SUCCESS,
   payload: {
-    value: authData,
+    idToken: authData.idToken,
+    userId: authData.localId
   },
 });
 
-export const authFail = (err) => ({
+export const authFail = (error) => ({
   type: AUTH_FAIL,
   payload: {
-    value: err,
+    error
   },
 });
 
@@ -110,7 +111,7 @@ export const auth = (email, password, isSignUp) => (dispatch) => {
   ax.post(url, { email, password, returnSecureToken: true })
     .then((res) => {
       console.log("AUTH SUCCESS", res);
-      dispatch(authSuccess(res));
+      dispatch(authSuccess(res.data));
     })
     .catch((err) => {
       console.log("AUTH FAILED", err);

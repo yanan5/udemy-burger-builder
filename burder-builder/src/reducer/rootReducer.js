@@ -5,6 +5,7 @@ import error from './error';
 import errorMessage from './errorMessage';
 import orders from './orders';
 import loading from './loading';
+import auth from './auth';
 
 export default combineReducers({
   ingredients,
@@ -12,5 +13,6 @@ export default combineReducers({
   error,
   loading,
   errorMessage,
-  orders
+  orders,
+  auth
 })
