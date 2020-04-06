@@ -60,7 +60,6 @@ class Auth extends Component {
     return isValid;
   };
   onChange = (fieldNameInState) => (e) => {
-    console.log(fieldNameInState, e.target.value);
     const fieldValueInState = this.state.controls[fieldNameInState];
     const updatedState = {
       controls: {

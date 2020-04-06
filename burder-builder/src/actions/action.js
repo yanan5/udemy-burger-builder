@@ -14,6 +14,7 @@ export const SAVE_ORDER_REJECTED = "SAVE_ORDER_REJECTED";
 export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";
 
 export const onAddIngredient = (type) => ({
   type: ADD_INGREDIENT,
@@ -99,6 +100,13 @@ export const authFail = (error) => ({
   },
 });
 
+export const logout = () => ({
+  type: AUTH_LOGOUT
+})
+export const checkAuthTimeout = (expirationTime) => dispatch => {
+  setTimeout(() => dispatch(logout()), parseInt(expirationTime) * 1000)
+}
+
 export const auth = (email, password, isSignUp) => (dispatch) => {
   dispatch(authStart());
   let signUp = "signInWithPassword";
@@ -110,6 +118,7 @@ export const auth = (email, password, isSignUp) => (dispatch) => {
   ax.post(url, { email, password, returnSecureToken: true })
     .then((res) => {
       dispatch(authSuccess(res.data));
+      dispatch(checkAuthTimeout(res.data.expiresIn));
     })
     .catch((error) => {
       dispatch(authFail(error.response.data.error));

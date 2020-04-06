@@ -1,14 +1,15 @@
-import * as actionTypes from '../../actions/action';
+import * as actionTypes from "../../actions/action";
 
 const userId = (state = null, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case actionTypes.AUTH_START:
+    case actionTypes.AUTH_FAIL:
+    case actionTypes.AUTH_LOGOUT:
       return null;
     case actionTypes.AUTH_SUCCESS:
-      return action.payload.userId
-    case actionTypes.AUTH_FAIL:
+      return action.payload.userId;
     default:
       return state;
   }
-}
+};
 export default userId;
