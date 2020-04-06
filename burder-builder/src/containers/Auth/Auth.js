@@ -1,0 +1,106 @@
+import React, { Component } from "react";
+import Input from "../../components/UI/Input/input";
+import Button from "../../components/UI/Button/Button";
+import classes from "./Auth.module.css";
+class Auth extends Component {
+  state = {
+    controls: {
+      email: {
+        elementType: "input",
+        label: "Email",
+        elementConfig: {
+          type: "email",
+          placeholder: "Mail Address",
+        },
+        value: "",
+        validation: {
+          required: true,
+          isEmail: true,
+        },
+        valid: false,
+        touched: false,
+      },
+      password: {
+        elementType: "input",
+        label: "Password",
+        elementConfig: {
+          type: "password",
+          placeholder: "Password",
+        },
+        value: "",
+        validation: {
+          required: true,
+          minLength: 6,
+        },
+        valid: false,
+        touched: false,
+      },
+    },
+  };
+  checkValidity = (value, rules) => {
+    let isValid = true;
+    if (rules.required) {
+      isValid = value.trim() !== "" && isValid;
+    }
+    if (rules.isEmail) {
+      const emailRule = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      isValid = value.match(emailRule) && isValid
+    }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+    return isValid;
+  };
+  onChange = (fieldNameInState) => (e) => {
+    const fieldValueInState = this.state.controls[fieldNameInState];
+    const updatedState = {
+      controls: {
+        ...this.state.controls,
+        [fieldNameInState]: {
+          ...fieldValueInState,
+          value: e.target.value,
+          valid: this.checkValidity(
+            e.target.value,
+            fieldValueInState.validation
+          ),
+          touched: true,
+        },
+      },
+    };
+    let formIsValid = true;
+    for (let fieldKey in updatedState.controls) {
+      formIsValid = updatedState.controls[fieldKey].valid && formIsValid;
+    }
+    this.setState({ ...updatedState, formIsValid });
+  };
+  render() {
+    const { controls } = this.state;
+    const formFields = [];
+    for (let fieldKey in controls) {
+      const fieldValue = controls[fieldKey];
+      formFields.push(
+        <Input
+          key={fieldKey}
+          {...fieldValue}
+          onChange={this.onChange(fieldKey)}
+          shouldValidate={fieldValue.validation}
+          invalid={!fieldValue.valid}
+          touched={fieldValue.touched}
+        />
+      );
+    }
+    return (
+      <div className={classes.Auth}>
+        <form>
+          {formFields}
+          <Button btnType="Success">SUBMIT</Button>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default Auth;

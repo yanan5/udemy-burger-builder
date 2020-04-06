@@ -15,6 +15,7 @@ const input = props => {
   switch (elementType) {
     case "input":
     case "email":
+    case "password":
       inputElement = (
         <input
           className={inputClasses.join(" ")}
