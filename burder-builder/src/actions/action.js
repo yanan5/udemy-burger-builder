@@ -72,10 +72,10 @@ export const fetchOrders = (token) => (dispatch) => {
   })
 };
 
-export const saveOrder = (order) => (dispatch) => {
+export const saveOrder = (order, token) => (dispatch) => {
   dispatch({ type: SAVE_ORDER_PENDING });
   return axios
-    .post("/orders.json", order)
+    .post(`/orders.json?auth=${token}`, order)
     .then((res) => {
       dispatch({ type: SAVE_ORDER_FULFILLED });
     })

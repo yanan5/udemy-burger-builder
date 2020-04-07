@@ -4,6 +4,7 @@ import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css";
 import { auth } from "../../actions/action";
 import { connect } from "react-redux";
+import {Redirect} from 'react-router-dom';
 import Spinner from "../../components/UI/Spinner/spinner";
 
 class Auth extends Component {
@@ -99,7 +100,7 @@ class Auth extends Component {
   };
   render() {
     const { controls } = this.state;
-    const { loading, error } = this.props;
+    const { loading, error, isAuthenticated } = this.props;
     const formFields = [];
     for (let fieldKey in controls) {
       const fieldValue = controls[fieldKey];
@@ -129,8 +130,13 @@ class Auth extends Component {
         color: '#FFF'
       }}>{error.message}</p>
     }
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to="/" />
+    }
     return (
       <div className={classes.Auth}>
+        {authRedirect}
         {errorMessage}
         {formOrSpinnerComp}
         <Button btnType="Danger" onClick={this.onSwitchSignInHandler}>
@@ -141,9 +147,10 @@ class Auth extends Component {
   }
 }
 
-const mapStateToProps = ({ auth: { loading, error } }) => ({
+const mapStateToProps = ({ auth: { loading, error, token } }) => ({
   loading,
   error,
+  isAuthenticated: token !== null
 });
 const mapDispatchToProps = {
   auth,

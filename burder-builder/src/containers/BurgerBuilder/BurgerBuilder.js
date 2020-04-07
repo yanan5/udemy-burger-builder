@@ -11,40 +11,45 @@ import { connect } from "react-redux";
 import {
   onAddIngredient,
   onDeleteIngredient,
-  initIngredients
+  initIngredients,
 } from "../../actions/action";
-import axios from '../../axios-orders';
-
+import axios from "../../axios-orders";
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false
+    purchasing: false,
   };
   componentDidMount() {
-    this.props.initIngredients()
+    this.props.initIngredients();
   }
 
   updatePurchaseState(ingredients) {
-    const sum = ingredients ? Object.keys(ingredients)
-      .map(igKey => {
-        return ingredients[igKey];
-      })
-      .reduce((sum, val) => {
-        return sum + val;
-      }, 0) : -1;
-    return sum > 0
+    const sum = ingredients
+      ? Object.keys(ingredients)
+          .map((igKey) => {
+            return ingredients[igKey];
+          })
+          .reduce((sum, val) => {
+            return sum + val;
+          }, 0)
+      : -1;
+    return sum > 0;
   }
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.history.push("/auth");
+    }
   };
   purchaseCancelled = () => {
     this.setState({
-      purchasing: false
+      purchasing: false,
     });
   };
   purchaseContinued = () => {
     this.props.history.push({
-      pathname: "/checkout"
+      pathname: "/checkout",
     });
   };
   render() {
@@ -55,9 +60,10 @@ class BurgerBuilder extends Component {
       onAddIngredient,
       onDeleteIngredient,
       error,
+      isAuthenticated,
     } = this.props;
     const disabledInfo = {
-      ...ingredients
+      ...ingredients,
     };
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
@@ -89,6 +95,7 @@ class BurgerBuilder extends Component {
                 priceList={INGREDIENT_PRICES}
                 purchasable={purchasable}
                 ingredients={ingredients}
+                isAuthenticated={isAuthenticated}
               />
             </Loader>
           </Auxillary>
@@ -98,15 +105,21 @@ class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = ({ ingredients, totalPrice, error }) => ({
+const mapStateToProps = ({
   ingredients,
   totalPrice,
-  error
+  error,
+  auth: { token },
+}) => ({
+  ingredients,
+  totalPrice,
+  error,
+  isAuthenticated: token !== null,
 });
 const mapDispatchToProps = {
   onAddIngredient,
   onDeleteIngredient,
-  initIngredients
+  initIngredients,
 };
 export default connect(
   mapStateToProps,

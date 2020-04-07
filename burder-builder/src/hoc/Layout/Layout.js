@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import React from "react";
+import {connect} from 'react-redux';
 import Auxillary from "../Auxillary/Auxillary";
 import classes from "./Layout.module.css";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 
-export default class Layout extends React.Component {
+class Layout extends React.Component {
   state = {
     showSideDrawer: false
   };
@@ -19,8 +20,11 @@ export default class Layout extends React.Component {
     const { children } = this.props;
     return (
       <Auxillary>
-        <Toolbar toggleSideDrawer={this.toggleSideDrawer} />
+        <Toolbar 
+          isAuthenticated={this.props.isAuthenticated}
+          toggleSideDrawer={this.toggleSideDrawer} />
         <SideDrawer
+          isAuthenticated={this.props.isAuthenticated}
           open={this.state.showSideDrawer}
           closed={this.sideDrawerCloseHandler}
         />
@@ -33,3 +37,8 @@ export default class Layout extends React.Component {
 Layout.propTypes = {
   children: PropTypes.any.isRequired
 };
+
+const mapStateToProps = (state) => ({
+  isAuthenticated : state.auth.token !== null
+})
+export default connect(mapStateToProps, null)(Layout)
