@@ -27,7 +27,7 @@ class Orders extends Component {
 const mapStateToProps = ({ orders: { data, keys }, auth: { token } }) => ({
   data,
   keys,
-  token
+  token,
 });
 const mapDispatchToProps = {
   fetchOrders,

@@ -34,7 +34,7 @@ class Checkout extends React.Component {
   }
 }
 
-const mapStateToProps = ({ ingredients }) => ({
+const mapStateToProps = ({ burger: { ingredients } }) => ({
   ingredients,
 });
 export default connect(mapStateToProps, null)(Checkout);

@@ -117,7 +117,7 @@ class ContactData extends Component {
       price: this.props.totalPrice,
       orderData,
     };
-    this.props.saveOrder(order,this.props.token);
+    this.props.saveOrder(order, this.props.token);
   };
   onChange = (fieldKeyInState) => (e) => {
     const selectedFieldValueInState = this.state.orderForm[fieldKeyInState];
@@ -187,9 +187,7 @@ class ContactData extends Component {
 }
 
 const mapStateToProps = ({
-  ingredients,
-  totalPrice,
-  loading,
+  burger: { ingredients, totalPrice, loading },
   auth: { token },
 }) => ({
   ingredients,

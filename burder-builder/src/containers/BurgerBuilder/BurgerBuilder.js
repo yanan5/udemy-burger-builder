@@ -106,9 +106,7 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = ({
-  ingredients,
-  totalPrice,
-  error,
+  burger: { ingredients, totalPrice, error },
   auth: { token },
 }) => ({
   ingredients,
