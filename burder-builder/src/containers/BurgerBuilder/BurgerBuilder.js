@@ -12,6 +12,7 @@ import {
   onAddIngredient,
   onDeleteIngredient,
   initIngredients,
+  setAuthRedirectPath
 } from "../../actions";
 import axios from "../../axios-orders";
 
@@ -39,6 +40,7 @@ class BurgerBuilder extends Component {
     if (this.props.isAuthenticated) {
       this.setState({ purchasing: true });
     } else {
+      this.props.setAuthRedirectPath('/checkout');
       this.props.history.push("/auth");
     }
   };
@@ -118,6 +120,7 @@ const mapDispatchToProps = {
   onAddIngredient,
   onDeleteIngredient,
   initIngredients,
+  setAuthRedirectPath
 };
 export default connect(
   mapStateToProps,

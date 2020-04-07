@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Input from "../../components/UI/Input/input";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css";
-import { auth } from "../../actions";
+import { auth, setAuthRedirectPath } from "../../actions";
 import { connect } from "react-redux";
-import {Redirect} from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/spinner";
 
 class Auth extends Component {
@@ -16,7 +16,7 @@ class Auth extends Component {
         elementConfig: {
           type: "email",
           placeholder: "Mail Address",
-          autoComplete: 'on'
+          autoComplete: "on",
         },
         value: "",
         validation: {
@@ -32,7 +32,7 @@ class Auth extends Component {
         elementConfig: {
           type: "password",
           placeholder: "Password",
-          autoComplete: 'on'
+          autoComplete: "on",
         },
         value: "",
         validation: {
@@ -45,6 +45,11 @@ class Auth extends Component {
     },
     isSignUp: true,
   };
+  componentDidMount() {
+    if(!this.props.building && this.props.authRedirectPath !== '/') {
+      this.props.setAuthRedirectPath("/")
+    }
+  }
   checkValidity = (value, rules) => {
     let isValid = true;
     if (rules.required) {
@@ -100,7 +105,7 @@ class Auth extends Component {
   };
   render() {
     const { controls } = this.state;
-    const { loading, error, isAuthenticated } = this.props;
+    const { loading, error, isAuthenticated, authRedirectPath } = this.props;
     const formFields = [];
     for (let fieldKey in controls) {
       const fieldValue = controls[fieldKey];
@@ -125,14 +130,20 @@ class Auth extends Component {
     );
     let errorMessage = null;
     if (error) {
-      errorMessage= <p style={{
-        backgroundColor: 'red',
-        color: '#FFF'
-      }}>{error.message}</p>
+      errorMessage = (
+        <p
+          style={{
+            backgroundColor: "red",
+            color: "#FFF",
+          }}
+        >
+          {error.message}
+        </p>
+      );
     }
     let authRedirect = null;
-    if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to="/" />
+    if (isAuthenticated) {
+      authRedirect = <Redirect to={authRedirectPath} />;
     }
     return (
       <div className={classes.Auth}>
@@ -147,12 +158,18 @@ class Auth extends Component {
   }
 }
 
-const mapStateToProps = ({ auth: { loading, error, token } }) => ({
+const mapStateToProps = ({
+  auth: { loading, error, token, authRedirectPath },
+  burger: { building },
+}) => ({
   loading,
   error,
-  isAuthenticated: token !== null
+  isAuthenticated: token !== null,
+  building,
+  authRedirectPath
 });
 const mapDispatchToProps = {
   auth,
+  setAuthRedirectPath
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
