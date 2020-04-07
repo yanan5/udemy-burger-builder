@@ -1,4 +1,4 @@
-import * as actionTypes from "../../actions/action";
+import * as actionTypes from "../../actions";
 import INGREDIENT_PRICES from "../../constants/constants";
 const defaultPrice = Object.values(INGREDIENT_PRICES).reduce(
   (accVal, currVal) => accVal + currVal,

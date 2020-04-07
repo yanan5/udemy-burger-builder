@@ -4,7 +4,7 @@ import axios from "../../axios-orders";
 import { Loader } from "../../components/UI/Spinner/spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { connect } from "react-redux";
-import { fetchOrders } from "../../actions/action";
+import { fetchOrders } from "../../actions";
 
 class Orders extends Component {
   componentDidMount() {

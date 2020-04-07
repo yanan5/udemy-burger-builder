@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Input from "../../components/UI/Input/input";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css";
-import { auth } from "../../actions/action";
+import { auth } from "../../actions";
 import { connect } from "react-redux";
 import {Redirect} from 'react-router-dom';
 import Spinner from "../../components/UI/Spinner/spinner";

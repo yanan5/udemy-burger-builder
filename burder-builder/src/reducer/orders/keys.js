@@ -1,4 +1,4 @@
-import * as actionTypes from '../../actions/action';
+import * as actionTypes from '../../actions';
 
 const keys = (state = [], action) => {
   switch(action.type) {

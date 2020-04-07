@@ -12,7 +12,7 @@ import {
   onAddIngredient,
   onDeleteIngredient,
   initIngredients,
-} from "../../actions/action";
+} from "../../actions";
 import axios from "../../axios-orders";
 
 class BurgerBuilder extends Component {
