@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, withRouter, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import Layout from "./hoc/Layout/Layout";
 import Logout from "./containers/Auth/Logout/Logout";
@@ -49,4 +49,4 @@ const mapStateToProps = ({ auth: { token } }) => ({
 const mapDispatchToProps = {
   authCheckState,
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default (connect(mapStateToProps, mapDispatchToProps)(App));
