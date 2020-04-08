@@ -7,7 +7,7 @@ import classes from "./ContactData.module.css";
 import axios from "../../axios-orders";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { saveOrder } from "../../actions";
-
+import { checkValidity } from '../../shared/utility';
 class ContactData extends Component {
   state = {
     orderForm: {
@@ -129,7 +129,7 @@ class ContactData extends Component {
         [fieldKeyInState]: {
           ...selectedFieldValueInState,
           value: e.target.value,
-          valid: this.checkValidity(
+          valid: checkValidity(
             e.target.value,
             selectedFieldValueInState.validation
           ),
@@ -143,19 +143,7 @@ class ContactData extends Component {
     }
     this.setState({ ...updatedState, formIsValid });
   };
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-    return isValid;
-  };
+  
   render() {
     const { orderForm } = this.state;
     const formFields = [];

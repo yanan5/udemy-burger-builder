@@ -6,7 +6,7 @@ import { auth, setAuthRedirectPath } from "../../actions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/spinner";
-
+import { checkValidity } from '../../shared/utility';
 class Auth extends Component {
   state = {
     controls: {
@@ -50,23 +50,7 @@ class Auth extends Component {
       this.props.setAuthRedirectPath("/")
     }
   }
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.isEmail) {
-      const emailRule = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      isValid = value.match(emailRule) && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-    return isValid;
-  };
+
   onChange = (fieldNameInState) => (e) => {
     const fieldValueInState = this.state.controls[fieldNameInState];
     const updatedState = {
@@ -75,7 +59,7 @@ class Auth extends Component {
         [fieldNameInState]: {
           ...fieldValueInState,
           value: e.target.value,
-          valid: this.checkValidity(
+          valid: checkValidity(
             e.target.value,
             fieldValueInState.validation
           ),
