@@ -31,18 +31,26 @@ const BuildControls = (props) => {
 }
 
 BuildControls.defaultProps = {
-  ingredients: {}
+  addIngredient: () =>{},
+  disabled: {},
+  ingredients: {},
+  price: 0,
+  priceList: {},
+  purchasable: false,
+  removeIngredient: () =>{},
+  showOrderHandler: () =>{},
+  isAuthenticated: false
 }
 BuildControls.propTypes = {
-  addIngredient: PropTypes.func.isRequired,
-  disabled: PropTypes.object.isRequired,
+  addIngredient: PropTypes.func,
+  disabled: PropTypes.object,
   ingredients: PropTypes.object,
-  price: PropTypes.number.isRequired,
-  priceList: PropTypes.object.isRequired,
-  purchasable: PropTypes.bool.isRequired,
-  removeIngredient: PropTypes.func.isRequired,
-  showOrderHandler: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired
+  price: PropTypes.number,
+  priceList: PropTypes.object,
+  purchasable: PropTypes.bool,
+  removeIngredient: PropTypes.func,
+  showOrderHandler: PropTypes.func,
+  isAuthenticated: PropTypes.bool
 }
 
 export default BuildControls;
