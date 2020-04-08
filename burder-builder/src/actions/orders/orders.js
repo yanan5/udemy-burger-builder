@@ -17,9 +17,10 @@ export const onFetchOrdersPending = () => ({
   type: FETCH_ORDERS_PENDING,
 });
 
-export const fetchOrders = (token) => (dispatch) => {
+export const fetchOrders = (token, userId) => (dispatch) => {
   dispatch(onFetchOrdersPending());
-  return axios.get(`/orders.json?auth=${token}`)
+  const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`
+  return axios.get(`/orders.json${queryParams}`)
   .then((res) => {
     if (res && res.data) {
       dispatch(onFetchOrdersFulfilled(res.data));

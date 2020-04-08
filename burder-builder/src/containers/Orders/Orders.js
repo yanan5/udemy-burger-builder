@@ -8,7 +8,8 @@ import { fetchOrders } from "../../actions";
 
 class Orders extends Component {
   componentDidMount() {
-    this.props.fetchOrders(this.props.token);
+    const {token, userId} = this.props;
+    this.props.fetchOrders(token, userId);
   }
   render() {
     const { data, keys } = this.props;
@@ -24,10 +25,11 @@ class Orders extends Component {
   }
 }
 
-const mapStateToProps = ({ orders: { data, keys }, auth: { token } }) => ({
+const mapStateToProps = ({ orders: { data, keys }, auth: { token, userId } }) => ({
   data,
   keys,
   token,
+  userId
 });
 const mapDispatchToProps = {
   fetchOrders,

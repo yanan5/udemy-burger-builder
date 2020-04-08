@@ -108,14 +108,16 @@ class ContactData extends Component {
   orderHandler = (e) => {
     e.preventDefault();
     const { orderForm } = this.state;
+    const {ingredients, totalPrice, userId} = this.props;
     const orderData = {};
     for (let key in orderForm) {
       orderData[key] = orderForm[key].value;
     }
     const order = {
-      ingredients: this.props.ingredients,
-      price: this.props.totalPrice,
+      ingredients,
+      price: totalPrice,
       orderData,
+      userId
     };
     this.props.saveOrder(order, this.props.token);
   };
@@ -188,12 +190,13 @@ class ContactData extends Component {
 
 const mapStateToProps = ({
   burger: { ingredients, totalPrice, loading },
-  auth: { token },
+  auth: { token, userId },
 }) => ({
   ingredients,
   totalPrice,
   loading,
   token,
+  userId
 });
 const mapDispatchToProps = {
   saveOrder,
