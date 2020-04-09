@@ -5,8 +5,10 @@ import Router from "next/router";
 
 class Index extends Component {
   static async getInitialProps(context) {
-    console.log(context);
-    return {appName : "Super App"}
+    const promise = new Promise((resolve, reject) =>
+      setTimeout(() => resolve({ appName: "Super App using promise" }), 5000)
+    );
+    return promise;
   }
   render() {
     return (
