@@ -1,6 +1,11 @@
+import Link from 'next/link';
+
 const Auth = () => (
   <div>
-    <p>Auth Page</p>
+    <h2>Auth Page</h2>
+    <Link href="/">
+      <a>Go Back</a>
+    </Link>
   </div>
 );
 
