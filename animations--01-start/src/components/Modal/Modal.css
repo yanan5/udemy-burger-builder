@@ -6,16 +6,18 @@
     background-color: white;
     padding: 10px;
     text-align: center;
-    box-sizing: border-box;
-    top: 30%;
+    box-sizing: border-box;    
     left: 25%;
     width: 50%;
+    transition: all 0.3s ease-out;
 }
 
 .ModalOpen {
-    display: block;
-
+    opacity: 1;
+    transform: translateY(0);
+    top: 30%;
 }
 .ModalClosed {
-    display: none;
+    opacity: 0;
+    transform: translateY(-100%)
 }
