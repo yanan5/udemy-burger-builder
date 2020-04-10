@@ -4,10 +4,7 @@ import "./App.css";
 import Modal from "./components/Modal/Modal";
 import Backdrop from "./components/Backdrop/Backdrop";
 import List from "./components/List/List";
-const animationTiming = {
-  enter: 400,
-  exit: 1000
-}
+
 class App extends Component {
   state = {
     modalIsOpen: true,
@@ -36,6 +33,12 @@ class App extends Component {
         <Transition
           mountOnEnter
           unmountOnExit
+          onEnter={() => console.log("onEnter")}
+          onEntering={() => console.log("onEntering")}
+          onEntered={() => console.log("onEntered")}
+          onExit={() => console.log("onExit")}
+          onExiting={() => console.log("onExiting")}
+          onExited={() => console.log("onExited")}
           in={this.state.showBlock}
           timeout={1000}
         >
@@ -52,13 +55,9 @@ class App extends Component {
             />
           )}
         </Transition>
-        <Transition
-          mountOnEnter
-          unmountOnExit
-          in={this.state.modalIsOpen} 
-          timeout={animationTiming}>
-          {(state) => <Modal closed={this.closeModal} show={state} />}
-        </Transition>
+        
+        <Modal closed={this.closeModal} show={this.state.modalIsOpen} />
+        
 
         <Backdrop show={this.state.modalIsOpen} />
         <button onClick={this.showModal} className="Button">
