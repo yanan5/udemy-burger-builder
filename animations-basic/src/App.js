@@ -44,13 +44,19 @@ class App extends Component {
                 height: 100,
                 margin: "auto",
                 transition: "opacity 1s ease-out",
-                opacity: state === 'exiting' ? 0 : 1,
+                opacity: state === "exiting" ? 0 : 1,
               }}
             />
           )}
         </Transition>
-        <br />
-        <Modal closed={this.closeModal} show={this.state.modalIsOpen} />
+        <Transition
+          mountOnEnter
+          unmountOnExit
+          in={this.state.modalIsOpen} 
+          timeout={300}>
+          {(state) => <Modal closed={this.closeModal} show={state} />}
+        </Transition>
+
         <Backdrop show={this.state.modalIsOpen} />
         <button onClick={this.showModal} className="Button">
           Open Modal
