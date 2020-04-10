@@ -4,7 +4,10 @@ import "./App.css";
 import Modal from "./components/Modal/Modal";
 import Backdrop from "./components/Backdrop/Backdrop";
 import List from "./components/List/List";
-
+const animationTiming = {
+  enter: 400,
+  exit: 1000
+}
 class App extends Component {
   state = {
     modalIsOpen: true,
@@ -53,7 +56,7 @@ class App extends Component {
           mountOnEnter
           unmountOnExit
           in={this.state.modalIsOpen} 
-          timeout={300}>
+          timeout={animationTiming}>
           {(state) => <Modal closed={this.closeModal} show={state} />}
         </Transition>
 
