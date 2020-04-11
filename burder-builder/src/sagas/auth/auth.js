@@ -1,11 +1,11 @@
-import { put, delay } from "redux-saga/effects";
+import { put, delay, call } from "redux-saga/effects";
 import ax from "axios";
 import * as actionTypes from "../../actions";
 
 export function* logoutSaga(action) {
-  yield localStorage.removeItem("token");
-  yield localStorage.removeItem("expirationDate");
-  yield localStorage.removeItem("userId");
+  yield call([localStorage, "removeItem"], "token");
+  yield call([localStorage, "removeItem"], "expirationDate");
+  yield call([localStorage, "removeItem"], "userId");
   yield put(actionTypes.logoutSucceed());
 }
 
@@ -32,9 +32,12 @@ export function* authUserSaga(action) {
     const expirationDate = yield new Date(
       new Date().getTime() + res.data.expiresIn * 1000
     );
-    yield localStorage.setItem("token", res.data.idToken);
-    yield localStorage.setItem("expirationDate", expirationDate);
-    yield localStorage.setItem("userId", res.data.localId);
+    yield call([localStorage, "setItem"], "token", res.data.idToken);
+    yield call(
+      [localStorage, "setItem"],
+      "expirationDate", expirationDate
+    );
+    yield call([localStorage, "setItem"], "userId", res.data.localId);
     yield put(actionTypes.authSuccess(res.data.idToken, res.data.localId));
     yield put(actionTypes.checkAuthTimeout(res.data.expiresIn));
   } catch (error) {
@@ -47,11 +50,17 @@ export function* authCheckStateSaga() {
   if (!token) {
     yield put(actionTypes.logout());
   } else {
-    const expirationDate = yield new Date(localStorage.getItem("expirationDate"));
+    const expirationDate = yield new Date(
+      localStorage.getItem("expirationDate")
+    );
     if (expirationDate > new Date()) {
       const userId = yield localStorage.getItem("userId");
       yield put(actionTypes.authSuccess(token, userId));
-      yield put(actionTypes.checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
+      yield put(
+        actionTypes.checkAuthTimeout(
+          (expirationDate.getTime() - new Date().getTime()) / 1000
+        )
+      );
     } else {
       yield put(actionTypes.logout());
     }
