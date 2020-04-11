@@ -3,7 +3,7 @@ import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import createSagaMiddleware from "redux-saga";
 import rootReducer from "../reducer/rootReducer";
 import thunk from "redux-thunk";
-import { watchAuth as rootSaga } from "../sagas";
+import { watchAuth, watchBurgerBuilder, watchOrders } from "../sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = composeWithDevTools({
@@ -15,6 +15,8 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk, sagaMiddleware))
 );
 
-sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchBurgerBuilder);
+sagaMiddleware.run(watchOrders)
 
 export default store;

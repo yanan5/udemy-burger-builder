@@ -1,8 +1,8 @@
-import axios from "../../axios-orders";
-
+export const FETCH_ORDERS = "FETCH_ORDERS";
 export const FETCH_ORDERS_FULFILLED = "FETCH_ORDERS_FULFILLED";
 export const FETCH_ORDERS_PENDING = "FETCH_ORDERS_PENDING";
 export const SAVE_ORDER_PENDING = "SAVE_ORDER_PENDING";
+export const SAVE_ORDER_START = "SAVE_ORDER_START";
 export const SAVE_ORDER_FULFILLED = "SAVE_ORDER_FULFILLED";
 export const SAVE_ORDER_REJECTED = "SAVE_ORDER_REJECTED";
 
@@ -17,23 +17,14 @@ export const onFetchOrdersPending = () => ({
   type: FETCH_ORDERS_PENDING,
 });
 
-export const fetchOrders = (token, userId) => (dispatch) => {
-  dispatch(onFetchOrdersPending());
-  const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`
-  return axios.get(`/orders.json${queryParams}`)
-  .then((res) => {
-    if (res && res.data) {
-      dispatch(onFetchOrdersFulfilled(res.data));
-    }
-  })
-};
+export const fetchOrders = (token, userId) => ({
+  type: FETCH_ORDERS,
+  token,
+  userId
+})
 
-export const saveOrder = (order, token) => (dispatch) => {
-  dispatch({ type: SAVE_ORDER_PENDING });
-  return axios
-    .post(`/orders.json?auth=${token}`, order)
-    .then((res) => {
-      dispatch({ type: SAVE_ORDER_FULFILLED });
-    })
-    .catch((err) => dispatch({ type: SAVE_ORDER_REJECTED }));
-};
+export const saveOrder = (order, token) =>({
+  type: SAVE_ORDER_START,
+  order,
+  token
+})
