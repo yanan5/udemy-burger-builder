@@ -4,6 +4,8 @@ export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
+export const AUTH_CHECK_TIMEOUT = "AUTH_CHECK_TIMEOUT";
+export const AUTH_INITIATE_LOGOUT = "AUTH_INITIATE_LOGOUT";
 export const SET_AUTH_REDIRECT_PATH = "SET_AUTH_REDIRECT_PATH";
 
 export const authStart = () => ({
@@ -25,17 +27,16 @@ export const authFail = (error) => ({
   },
 });
 
-export const logout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("expirationDate");
-  localStorage.removeItem("userId");
-  return {
-    type: AUTH_LOGOUT,
-  };
-};
-export const checkAuthTimeout = (expirationTime) => (dispatch) => {
-  setTimeout(() => dispatch(logout()), parseInt(expirationTime) * 1000);
-};
+export const logout = () => ({
+  type: AUTH_INITIATE_LOGOUT
+});
+export const logoutSucceed = () => ({
+  type: AUTH_LOGOUT
+});
+export const checkAuthTimeout = (expirationTime) => ({
+  type: AUTH_CHECK_TIMEOUT,
+  expirationTime
+})
 
 export const auth = (email, password, isSignUp) => (dispatch) => {
   dispatch(authStart());
@@ -78,7 +79,9 @@ export const authCheckState = () => (dispatch) => {
       const userId = localStorage.getItem("userId");
       dispatch(authSuccess(token, userId));
       dispatch(
-        checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000)
+        checkAuthTimeout(
+          (expirationDate.getTime() - new Date().getTime()) / 1000
+        )
       );
     } else {
       dispatch(logout());
