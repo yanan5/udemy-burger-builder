@@ -22,3 +22,9 @@
   display: flex;
   justify-content: space-between;
 }
+
+.ingredient-list .remove {
+  display: inline-block;
+  padding-left: 10px;
+  cursor: pointer;
+}

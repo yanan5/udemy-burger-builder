@@ -9,7 +9,9 @@ const Search = React.memo(props => {
       <Card>
         <div className="search-input">
           <label>Filter by Title</label>
-          <input type="text" />
+          <input type="text" 
+            value={props.title}
+            onChange={(e) => props.setSearchTitle(e.target.value)}/>
         </div>
       </Card>
     </section>
