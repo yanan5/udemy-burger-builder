@@ -80,7 +80,7 @@ function Ingredients() {
     error
   } = httpState;
 
-  const addIngredient = (ingredient) => {    
+  const addIngredient = useCallback((ingredient) => {    
     dispatchHttp({
       type: 'SEND'
     });
@@ -104,9 +104,9 @@ function Ingredients() {
           type: 'RESPONSE'
         });
       });
-  };
+  }, []);
 
-  const removeIngredient = (id) => {
+  const removeIngredient = useCallback(id => {
     dispatchHttp({
       type: 'DELETE',
       id
@@ -139,7 +139,7 @@ function Ingredients() {
           type: 'CLEAR_DELETE'
         })
       });
-  };
+  }, []);
 
   const setFilteredIngredients = useCallback((filteredIngredients) =>
     dispatch({

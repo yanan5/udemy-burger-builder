@@ -16,6 +16,7 @@ const IngredientForm = React.memo((props) => {
 
     // ...
   };
+  
   return (
     <section className="ingredient-form">
       <Card>
