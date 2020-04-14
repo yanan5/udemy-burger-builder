@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
 import Card from "../UI/Card";
 import "./IngredientForm.css";
+import LoadingIndicator from "../UI/LoadingIndicator";
 
 const IngredientForm = React.memo((props) => {
   const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  
+  const [amount, setAmount] = useState("");  
+  const { isLoading } = props;
+
   const submitHandler = (event) => {
     event.preventDefault();
     if (title !== "" && amount !== "") {
-      props.addIngredient({ id: uuidv4(), title, amount });
+      props.addIngredient({ title, amount });
     }
 
     // ...
@@ -38,7 +39,11 @@ const IngredientForm = React.memo((props) => {
             />
           </div>
           <div className="ingredient-form__actions">
-            <button type="submit">Add Ingredient</button>
+            {isLoading ? (
+              <LoadingIndicator />
+            ) : (
+              <button type="submit">Add Ingredient</button>
+            )}
           </div>
         </form>
       </Card>
