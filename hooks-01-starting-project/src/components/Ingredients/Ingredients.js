@@ -1,8 +1,9 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useReducer, useEffect } from "react";
 import IngredientForm from "./IngredientForm";
 import IngredientList from "./IngredientList";
 import ErrorModal from "../UI/ErrorModal";
 import Search from "./Search";
+import useHttp from '../hooks/http';
 
 const ingredientReducer = (currentIngredients, action) => {
   switch (action.type) {
@@ -18,128 +19,60 @@ const ingredientReducer = (currentIngredients, action) => {
       throw new Error("ingredientReducer Error");
   }
 };
-const httpInitialState = {
-  isLoading: false,
-  isAdding: false,
-  deleteId: '',
-  error: null
-}
-const httpReducer = (httpReducer, action) => {
-  console.log(httpReducer, action)
-  switch(action.type) {
-    case 'SEND':
-      return {
-        ...httpReducer,
-        isAdding : true,
-        isLoading: true
-      }
-    case 'RESPONSE':
-      return {
-        ...httpReducer,
-        isAdding: false,
-        isLoading: false
-      }
-    case 'ERROR':      
-      return {
-        ...httpReducer,
-        isLoading: false,
-        isAdding: false,
-        deleteId: '',
-        error: action.error
-      }
-    case 'ADD_INGREDIENT':
-      return {
-        ...httpReducer,
-        isAdding : true,
-        deleteId: ''
-      }
-    case 'DELETE':
-      return {
-        ...httpReducer,
-        isAdding : false,
-        deleteId: action.id
-      }
-    case 'CLEAR_DELETE':
-      return {
-        ...httpReducer,
-        isAdding : false,
-        deleteId: action.id
-      }
-    default:
-      throw new Error("http Reducer Error");
-  }
-}
+
 function Ingredients() {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
-  // const [ingredients, setIngredients] = useState([]);
-  const [httpState, dispatchHttp] = useReducer(httpReducer, httpInitialState);
+  const [httpState, sendRequest, dispatchHttp] = useHttp();
   const {
     isLoading,
-    isAdding,
-    deleteId,
-    error
+    data,
+    error,
+    meta
   } = httpState;
 
-  const addIngredient = useCallback((ingredient) => {    
-    dispatchHttp({
-      type: 'SEND'
-    });
-    fetch("https://react-hooks-update-3be73.firebaseio.com/ingredients.json", {
-      method: "POST",
-      body: JSON.stringify(ingredient),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch({
-          type: "ADD_INGREDIENT",
-          ingredient: {
-            ...ingredient,
-            id: data.name,
-          },
-        });
-        dispatchHttp({
-          type: 'RESPONSE'
-        });
+  useEffect(() => {
+    if(!isLoading && !error && meta && meta.type === 'DELETE_INGREDIENT') {
+      dispatch({
+        type: meta.type,
+        id: meta.value,
       });
-  }, []);
+    }
+  }, [meta, error, isLoading])
+  useEffect(() => {
+    if(!isLoading && !error && data && meta && meta.type === 'ADD_INGREDIENT') {
+      dispatch({
+        type: meta.type,
+        ingredient: {
+          ...meta.value,
+          id: data.name
+        }
+      })
+    }
+  }, [data, meta, error, isLoading])
+
+  const addIngredient = useCallback((ingredient) => {    
+    sendRequest(
+      "https://react-hooks-update-3be73.firebaseio.com/ingredients.json",
+      "POST",
+      JSON.stringify(ingredient),
+      {
+        type: 'ADD_INGREDIENT',
+        value: ingredient
+      }
+    )    
+  }, [sendRequest]);
 
   const removeIngredient = useCallback(id => {
-    dispatchHttp({
-      type: 'DELETE',
-      id
-    })
-    fetch(
+    sendRequest(
       `https://react-hooks-update-3be73.firebaseio.com/ingredients/${id}.json`,
+      'DELETE',
+      null,
       {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        type: 'DELETE_INGREDIENT',
+        value: id
       }
     )
-      .then((data) => {
-        dispatch({
-          type: "DELETE_INGREDIENT",
-          id,
-        });
-
-        dispatchHttp({
-          type: 'CLEAR_DELETE'
-        })
-      })
-      .catch((e) => {
-        dispatchHttp({
-          type: 'ERROR',
-          error:e
-        })
-        dispatchHttp({
-          type: 'CLEAR_DELETE'
-        })
-      });
-  }, []);
+  }, [sendRequest]);
 
   const setFilteredIngredients = useCallback((filteredIngredients) =>
     dispatch({
@@ -148,24 +81,25 @@ function Ingredients() {
     })
   ,[]);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatchHttp({
-      type: 'CLEAR_ERROR'
+      type: 'CLEAR'
     })
-  };
+  }, [dispatchHttp]);
+  
   return (
     <div className="App">
       {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
-      <IngredientForm addIngredient={addIngredient} isLoading={isLoading} />
+      <IngredientForm addIngredient={addIngredient} isLoading={isLoading && meta && meta.type === 'ADD_INGREDIENT'} />
 
       <section>
         <Search setFilteredIngredients={setFilteredIngredients} />
-        {ingredients.length > 0 && (
+        {ingredients && ingredients.length > 0 && (
           <IngredientList
             ingredients={ingredients}
             onRemoveItem={removeIngredient}
-            isAdding={isAdding}
-            deleteId={deleteId}
+            isAdding={isLoading && meta && meta.type === 'ADD_INGREDIENT'}
+            deleteId={meta && meta.type === 'DELETE_INGREDIENT' && meta.value}
           />
         )}
       </section>
