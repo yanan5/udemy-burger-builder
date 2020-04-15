@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Auxillary from "../../../hoc/Auxillary/Auxillary";
 import Button from "../../UI/Button/Button";
+
 const OrderSummary = props => {
   const ingredientSummary = Object.keys(props.ingredients).map(igKey => (
     <li key={igKey}>
