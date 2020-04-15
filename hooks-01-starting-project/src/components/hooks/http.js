@@ -62,7 +62,8 @@ const useHttp = () => {
       });
   }, []);
 
-  return [httpState, sendRequest, dispatch]
+  const clear = useCallback(() => dispatch({type: 'CLEAR'}))
+  return [httpState, sendRequest, clear]
 };
 
 export default useHttp;

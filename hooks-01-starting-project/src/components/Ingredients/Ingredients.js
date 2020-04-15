@@ -22,7 +22,7 @@ const ingredientReducer = (currentIngredients, action) => {
 
 function Ingredients() {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
-  const [httpState, sendRequest, dispatchHttp] = useHttp();
+  const [httpState, sendRequest, clear] = useHttp();
   const {
     isLoading,
     data,
@@ -82,11 +82,9 @@ function Ingredients() {
   ,[]);
 
   const clearError = useCallback(() => {
-    dispatchHttp({
-      type: 'CLEAR'
-    })
-  }, [dispatchHttp]);
-  
+    clear()
+  }, [clear]);
+
   return (
     <div className="App">
       {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
