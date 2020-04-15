@@ -1,29 +1,31 @@
-import React from "react";
+import React, {useCallback} from "react";
 import { Route, Redirect } from "react-router-dom";
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import { Loader } from "../../components/UI/Spinner/spinner";
 import { connect } from "react-redux";
 import ContactData from "../ContactData/ContactData";
-class Checkout extends React.Component {
-  checkoutCancelledHandler = () => {
-    this.props.history.goBack();
-  };
-  checkoutContinuedHandler = () => {
-    this.props.history.replace("/checkout/contact-data");
-  };
-  render() {
-    const { ingredients } = this.props;
+
+const Checkout = props => {
+  const { ingredients, history, match } = props;
+  const checkoutCancelledHandler = useCallback(() => {
+    history.goBack();
+  });
+  const checkoutContinuedHandler = useCallback(() => {
+    history.replace("/checkout/contact-data");
+  });
+  
+   
     const summary = ingredients ? (
       <Loader loading={ingredients}>
         <CheckoutSummary
-          checkoutCancelled={this.checkoutCancelledHandler}
-          checkoutContinued={this.checkoutContinuedHandler}
+          checkoutCancelled={checkoutCancelledHandler}
+          checkoutContinued={checkoutContinuedHandler}
           ingredients={ingredients}
         />
         ]
         <Route
           exact
-          path={`${this.props.match.path}/contact-data`}
+          path={`${match.path}/contact-data`}
           component={ContactData}
         />
       </Loader>
@@ -31,7 +33,7 @@ class Checkout extends React.Component {
       <Redirect to="/" />
     );
     return <div>{summary}</div>;
-  }
+  
 }
 
 const mapStateToProps = ({ burger: { ingredients } }) => ({
