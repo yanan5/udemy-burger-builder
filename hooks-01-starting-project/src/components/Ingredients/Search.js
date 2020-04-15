@@ -9,7 +9,7 @@ const Search = React.memo((props) => {
 
   const [searchTitle, setSearchTitle] = useState("");
   const [httpState, sendRequest] = useHttp();
-  const { isLoading, data } = httpState;
+  const { isLoading, data, error } = httpState;
   
   const inputRef = useRef();
   
@@ -35,7 +35,7 @@ const Search = React.memo((props) => {
   }, [searchTitle, sendRequest, inputRef]);
 
   useEffect(() => {
-    if (data) {
+    if (!isLoading && !error && data) {
       const keys = Object.keys(data);
       const transformedIngredients = keys.map((key) => ({
         ...data[key],
@@ -43,7 +43,7 @@ const Search = React.memo((props) => {
       }));
       setFilteredIngredients(transformedIngredients);
     }
-  }, [data, setFilteredIngredients]);
+  }, [isLoading, error, data, setFilteredIngredients]);
   
   return (
     <section className="search">
