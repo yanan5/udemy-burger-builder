@@ -33,8 +33,7 @@ const BurgerBuilder = (props) => {
 
   useEffect(() => {
     initIngredients();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initIngredients]);
 
   const updatePurchaseState = (ingredients) => {
     const sum = ingredients

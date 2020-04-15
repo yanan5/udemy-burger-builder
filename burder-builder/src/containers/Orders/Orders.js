@@ -7,12 +7,10 @@ import { connect } from "react-redux";
 import { fetchOrders } from "../../actions";
 
 const Orders = (props) => {
-  const { data, keys } = props;
+  const { data, keys, token, userId, fetchOrders } = props;
   useEffect(() => {
-    const { token, userId, fetchOrders } = props;
     fetchOrders(token, userId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token, userId, fetchOrders]);
 
   return (
     <Loader loading={data}>

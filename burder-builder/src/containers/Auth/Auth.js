@@ -58,9 +58,8 @@ const Auth = (props) => {
   useEffect(() => {
     if (!building && authRedirectPath !== "/") {
       setAuthRedirectPath("/");
-    }    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    }
+  }, [building, authRedirectPath, setAuthRedirectPath]);
 
   const onChange = (fieldNameInState) => (e) => {
     const fieldValueInState = controls[fieldNameInState];

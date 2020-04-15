@@ -16,8 +16,7 @@ const App = (props) => {
   const { authCheckState, isAuthenticated } = props;
   useEffect(() => {
     authCheckState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [authCheckState]);
 
   let routes = (
     <Switch>
