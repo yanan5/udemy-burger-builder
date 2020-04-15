@@ -3,7 +3,8 @@ export const checkValidity = (value, rules) => {
   if (rules.required) {
     isValid = value.trim() !== "" && isValid;
   }
-  if (rules.isEmail) {
+  if (rules.isEmail) {    
+    // eslint-disable-next-line
     const emailRule = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     isValid = value.match(emailRule) && isValid;
   }

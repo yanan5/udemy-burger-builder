@@ -10,9 +10,9 @@ const Layout = (props) => {
   const { children, isAuthenticated } = props;
   const [showSideDrawer, setShowSideDrawer] = useState(false);
 
-  const sideDrawerCloseHandler = useCallback(() => setShowSideDrawer(false));
+  const sideDrawerCloseHandler = useCallback(() => setShowSideDrawer(false) ,[]);
 
-  const toggleSideDrawer = useCallback(() => setShowSideDrawer(!showSideDrawer));
+  const toggleSideDrawer = useCallback(() => setShowSideDrawer(!showSideDrawer), [showSideDrawer]);
 
   return (
     <Auxillary>

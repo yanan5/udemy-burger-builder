@@ -9,10 +9,10 @@ const Checkout = props => {
   const { ingredients, history, match } = props;
   const checkoutCancelledHandler = useCallback(() => {
     history.goBack();
-  });
+  }, [history]);
   const checkoutContinuedHandler = useCallback(() => {
     history.replace("/checkout/contact-data");
-  });
+  }, [history]);
   
    
     const summary = ingredients ? (

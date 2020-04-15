@@ -11,6 +11,7 @@ const Orders = (props) => {
   useEffect(() => {
     const { token, userId, fetchOrders } = props;
     fetchOrders(token, userId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

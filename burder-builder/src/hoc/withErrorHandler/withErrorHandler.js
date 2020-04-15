@@ -22,7 +22,7 @@ const withErrorHandler = (Component, axiosInstance) => (props) => {
     };
   }, [requestInterceptor, responseInterceptors]);
 
-  const closeModal = useCallback(() => setError(null));
+  const closeModal = useCallback(() => setError(null), []);
 
   return (
     <Aux>
