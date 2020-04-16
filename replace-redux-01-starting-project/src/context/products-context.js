@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const initialProducts = [
+export const initialProducts = [
   {
     id: "p1",
     title: "Red Scarf",
